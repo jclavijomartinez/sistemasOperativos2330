@@ -1,8 +1,9 @@
 /*
 
-25/06/2023
-autor: santiago mesa
-objetivo: crear app de multiplicacion de matrices en compilacion separada
+25-06-2023
+AUTOR: JUAN CLAVIJO
+OBJETIVO: crear app de multiplicacion de matrices en compilacion separada
+NOTAS:
 
 */
 #include<stdio.h>
@@ -43,6 +44,10 @@ void imprimir_Matriz(int n, double *a){
 int main(int argc, char *argv[]){
 	/*se captura el argumento de entrada*/
 	int N = (int) atof (argv[1]);
+	/**/
+	if(argc < 2){
+		return -1;
+	}
 	// se reserva el espacio para las matrices con punteros
 	double *A = MEM_CHUNK;
 	double *B = A + N*N;
@@ -54,11 +59,30 @@ int main(int argc, char *argv[]){
 	imprimir_Matriz(N, B);
 	imprimir_Matriz(N, C);
 	
+	/* calculo de multiplicacion de matrices:
+	 * se empleara el algoritmo clasico de filas x columnas
+	 * se requiere que la manipulacion de las matrices sea por uso de 
+	 * punteros
+	 */
+	for(int i=0; i< N; i++){
+                for(int j=0; j< N; j++){
+			/* punteros auxiliares y resultado de calc*/
+			double *ptrauxA,*ptrauxB,Calc=0;
+			/*se apuntan los punteros segun el algo*/
+			ptrauxA=A+(N*i);
+			ptrauxB=B+j;
+			for(int k=0;k < N;k++,ptrauxA++,ptrauxB+=N){
+				Calc+=(*ptrauxA * *ptrauxB);
+			}
+			C[i*N+j] = Calc;
+		}
+	}	
 	
 	
+//	printf("%d \n",N);	
 	
-	printf("%d \n",N);	
-	
-	
+	printf("matriz resultado: \n");
+	imprimir_Matriz(N, C);
+
 	return 0;
 }
