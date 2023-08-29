@@ -8,6 +8,8 @@ NOTAS:
 */
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
 
 /*se reserva memoria*/
 #define SIZE_DATA (1024*1024*8)
@@ -42,12 +44,41 @@ void imprimir_Matriz(int n, double *a){
 
 
 int main(int argc, char *argv[]){
-	/*se captura el argumento de entrada*/
-	int N = (int) atof (argv[1]);
-	/**/
-	if(argc < 2){
+	if(argc < 3){
 		return -1;
 	}
+	/*se captura el argumento de entrada*/
+	int N = (int) atof (argv[1]);
+    int valor = 3;
+	/**/
+	char *ficheroa = argv[2]; //capturamos el nombre del fichero
+	//foy a leer el fchero
+	FILE *fileA;
+    int cantidad = (int) atof(argv[2]);
+    char buff[10]={0};
+	fileA = fopen("./ficheroA","w");
+	if(fileA ==NULL){
+		return -1;
+	}
+	
+	/* se captura el numero de filas y cols, condicion la separacion entre datos
+	",",".",";"," "*/
+	char caracter;
+	/*while ((caracter=fgets(fileA))=!EOF) {
+		if (caracter == ' ' && caracter != '\n'){
+			
+		}
+	}*/
+    //bucle cantidad de elems
+    for (int i =0;i<cantidad;i++){
+        valor *= i+1;
+        //PRUEBA: impresion de valores segun cantidad en pantalla
+        printf(" %d ",valor);
+        //impresion de valores segun cantidad en fichero
+        sprintf(buff," %d" , valor);
+        fputs(buff,fileA);
+    }
+    fclose(fileA);
 	// se reserva el espacio para las matrices con punteros
 	double *A = MEM_CHUNK;
 	double *B = A + N*N;
