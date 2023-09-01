@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
         //PRUEBA: impresion de valores segun cantidad en pantalla
         //printf(" %d ",valor);
         //impresion de valores segun cantidad en fichero
-        sprintf(buff," %d " , valor);
+        sprintf(buff,"%d " , valor);
         fputs(buff,fileA);
     }
     fclose(fileA);
