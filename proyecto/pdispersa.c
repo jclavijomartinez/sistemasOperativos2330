@@ -11,35 +11,50 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-/*Visualización de las Matrices*/
-void Impr_Matriz(int n, double *a){
-	int i, j;
-	for (i=0; i < n; i++){
-		for (j=0; j < n; j++){
-			printf(" %f ", a[j+i*n]);
-		}
-		printf("\n");
-	}
-	printf("\n");
+//funcion que crea (reserva el espacio para las matrices)
+int **crearmatriz(int nfil, int ncol, int** mat){
+    mat = (int **)malloc(nfil*sizeof(int *));
+    if (mat == NULL) {
+        perror("Error al asignar memoria para las filas de la matriz");
+        free(mat);
+        exit(EXIT_FAILURE);
+    }
+    for (int i=0;i<nfil;i++){
+        (mat)[i]=(int *)malloc(ncol*sizeof(int));
+    }
+    return mat;
 }
 
 
 //funcion que carga la matriz desde el archivo a memoria
-void cargarmatriz(FILE *arch , char *archivo, int filas, int cols){
-    arch = fopen(archivo,"r"); //se abre el archivo
+void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int **matriz) {
+    arch = fopen(archivo, "r"); //se abre el archivo, como no se tiene que modificar, se usa r
+    if (arch == NULL) {
+        perror("Error al abrir el archivo"); //si no se puede abrir el archivo, se devuelve un error 
+        exit(EXIT_FAILURE);
+    }
+    //se lleva a memoria la info del archivo
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < cols; j++) {
+            fscanf(arch,"%d",&(matriz[i][j]));
+        }
+    }
+    printf("Los contenidos del archivo, %p, se cargaron exitosamente en memoria\n",archivo);
+    fclose(arch);
+    printf("El archivo se abrio y cerro exitosamente\n");
 }
-
 
 int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     //se inicializan las variables para recibir los datos del usr dados en la terminal
     int numfils=-1;
     int numcols=-1;
     char *archivo = NULL;
-    FILE arch;
+    FILE *arch;
     int numproc=-1;
     int numpor=-1;
     int opc;
-    //se verifica que lo que haya pasado por consola el usr si tenga el largo esperado
+    int **matriz;
+    //se verifica que lo que haya pasado por consola del usr si tenga el largo esperado
     if (argc < 10)
     {
         printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n");
@@ -68,9 +83,17 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
                 exit(EXIT_FAILURE);
         }
     }
+    //se llama la funcion que reserva el espacio de memoria para la matriz
+    crearmatriz(numfils,numcols,matriz);
     //se llama a la funcion que carga la matriz en memoria
+    cargarmatriz(arch,archivo,numfils,numcols,matriz);
+    //se liberan los recursos de memoria usados, empezando por la matriz
+    for (int i = 0; i < numcols; i++) {
+        free(matriz[i]);
+    }
+    free(matriz);
     /*
-    //prints de ayuda para verificar que los datos ingresados sean correctos
+    prints de ayuda para verificar que los datos ingresados sean correcto IGNORAR
     printf("Filas: %d\n", numfils);
     printf("Columnas: %d\n", numcols);
     printf("Archivo: %s\n", archivo);
