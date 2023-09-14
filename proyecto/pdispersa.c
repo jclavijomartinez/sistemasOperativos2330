@@ -46,7 +46,7 @@ void **crearmatriz(int nfil, int ncol, int*** mat){
 
 
 //funcion que carga la matriz desde el archivo a memoria
-void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int **matriz) {
+void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int ***matriz) {
     arch = fopen(archivo, "r"); //se abre el archivo, como no se tiene que modificar, se usa r
     if (arch == NULL) {
         perror("Error al abrir el archivo"); //si no se puede abrir el archivo, se devuelve un error 
@@ -55,10 +55,10 @@ void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int **matriz) {
     //se lleva a memoria la info del archivo
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < cols; j++) {
-            fscanf(arch,"%d",&(matriz[i][j]));
+            fscanf(arch,"%i",matriz[i][j]); //el problema esta aqui
         }
     }
-    printf("Los contenidos del archivo, %p, se cargaron exitosamente en memoria\n",archivo);
+    printf("Los contenidos del archivo, se cargaron exitosamente en memoria\n");
     fclose(arch);
     printf("El archivo se abrio y cerro exitosamente\n");
 }
@@ -105,10 +105,9 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     }
     //se llama la funcion que reserva el espacio de memoria para la matriz
     crearmatriz(numfils,numcols,&matriz);
-    //fillmat(numfils,numcols,matriz);
-    printmat(numfils,numcols,matriz);
-    //se llama a la funcion que carga la matriz en memoria
-    //cargarmatriz(arch,archivo,numfils,numcols,matriz);
+    //printmat(numfils,numcols,matriz);
+    //se llama a la funcion que almacena los elementos en memoria
+    cargarmatriz(arch,archivo,numfils,numcols,&matriz);
     //se liberan los recursos de memoria usados, empezando por la matriz
     free(matriz);
     //printf("Filas: %d\n", numfils);
