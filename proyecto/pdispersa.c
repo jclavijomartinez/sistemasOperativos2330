@@ -11,18 +11,37 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-//funcion que crea (reserva el espacio para las matrices)
-int **crearmatriz(int nfil, int ncol, int** mat){
-    mat = (int **)malloc(nfil*sizeof(int *));
-    if (mat == NULL) {
-        perror("Error al asignar memoria para las filas de la matriz");
-        free(mat);
-        exit(EXIT_FAILURE);
+
+void printmat(int filas, int cols, int** matrix){
+    for (int i = 0; i < filas; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("%d ",matrix[i][j]);
+        }
+        printf("\n");
     }
-    for (int i=0;i<nfil;i++){
-        (mat)[i]=(int *)malloc(ncol*sizeof(int));
+    
+}
+
+//funcion que crea (reserva el espacio para las matrices) una matriz
+void **crearmatriz(int nfil, int ncol, int*** mat){
+    *mat = (int**)malloc(nfil*sizeof(int*));
+    if (mat == NULL)
+    {
+        printf("ERROR: No se ha podido reservar memoria para la matriz!\n");
+        exit(1);
     }
-    return mat;
+    for (int i = 0; i < nfil; i++)
+    {
+        (*mat)[i] = (int *)malloc(ncol*sizeof(int));
+        if ((*mat)[i] == NULL) {
+            printf("ERROR: No se ha podido reservar memoria para las cols!\n");
+            exit(1);
+        }
+    }
+    
+    printf("se ha reservado la memoria para la matriz con exito!\n");
 }
 
 
@@ -46,6 +65,7 @@ void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int **matriz) {
 
 int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     //se inicializan las variables para recibir los datos del usr dados en la terminal
+    
     int numfils=-1;
     int numcols=-1;
     char *archivo = NULL;
@@ -84,21 +104,13 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         }
     }
     //se llama la funcion que reserva el espacio de memoria para la matriz
-    crearmatriz(numfils,numcols,matriz);
+    crearmatriz(numfils,numcols,&matriz);
+    //fillmat(numfils,numcols,matriz);
+    printmat(numfils,numcols,matriz);
     //se llama a la funcion que carga la matriz en memoria
-    cargarmatriz(arch,archivo,numfils,numcols,matriz);
+    //cargarmatriz(arch,archivo,numfils,numcols,matriz);
     //se liberan los recursos de memoria usados, empezando por la matriz
-    for (int i = 0; i < numcols; i++) {
-        free(matriz[i]);
-    }
     free(matriz);
-    /*
-    prints de ayuda para verificar que los datos ingresados sean correcto IGNORAR
-    printf("Filas: %d\n", numfils);
-    printf("Columnas: %d\n", numcols);
-    printf("Archivo: %s\n", archivo);
-    printf("N Procesos: %d\n", numproc);
-    printf("Porcentaje: %d\n", numpor);
-    */
+    //printf("Filas: %d\n", numfils);
 	return 0;
 }
