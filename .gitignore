@@ -2,4 +2,10 @@
 *.out
 *.exe
 #ignora carpeta de vscode
-*.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+./proyecto/.vscode/*
