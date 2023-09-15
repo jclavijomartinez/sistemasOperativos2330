@@ -6,6 +6,7 @@
  ***************************************************************/
 
 //includes respectivos
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -46,22 +47,48 @@ void **crearmatriz(int nfil, int ncol, int*** mat){
 
 
 //funcion que carga la matriz desde el archivo a memoria
-void cargarmatriz(FILE *arch, char *archivo,int filas, int cols, int ***matriz) {
-    arch = fopen(archivo, "r"); //se abre el archivo, como no se tiene que modificar, se usa r
+void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int ***matriz) {
+    arch = fopen(archivo, "r");
     if (arch == NULL) {
-        perror("Error al abrir el archivo"); //si no se puede abrir el archivo, se devuelve un error 
+        perror("Error al abrir el archivo");
         exit(EXIT_FAILURE);
     }
-    //se lleva a memoria la info del archivo
+
+    char *linea = NULL;
+    size_t longitud = 0;
+    ssize_t leidos;
+
     for (int i = 0; i < filas; i++) {
-        for (int j = 0; j < cols; j++) {
-            fscanf(arch,"%i",matriz[i][j]); //el problema esta aqui
+        leidos = getline(&linea, &longitud, arch);
+        if (leidos == -1) {
+            perror("Error al leer desde el archivo");
+            free(linea);
+            fclose(arch);
+            exit(EXIT_FAILURE);
+        }
+
+        char *token = strtok(linea, " ");
+        for (int j = 0; j < cols && token != NULL; j++) {
+            int valor;
+            if (sscanf(token, "%d", &valor) == 1) {
+                (*matriz)[i][j] = valor;
+            } else {
+                perror("Error al convertir token a entero");
+                free(linea);
+                fclose(arch);
+                exit(EXIT_FAILURE);
+            }
+            token = strtok(NULL, " ");
         }
     }
-    printf("Los contenidos del archivo, se cargaron exitosamente en memoria\n");
+
+    free(linea);
+    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n");
     fclose(arch);
-    printf("El archivo se abrio y cerro exitosamente\n");
+    printf("El archivo se abrió y cerró exitosamente\n");
 }
+
+//se crea el numero de procesos 
 
 int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     //se inicializan las variables para recibir los datos del usr dados en la terminal
@@ -108,6 +135,7 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     //printmat(numfils,numcols,matriz);
     //se llama a la funcion que almacena los elementos en memoria
     cargarmatriz(arch,archivo,numfils,numcols,&matriz);
+    printmat(numfils,numcols,matriz);
     //se liberan los recursos de memoria usados, empezando por la matriz
     free(matriz);
     //printf("Filas: %d\n", numfils);
