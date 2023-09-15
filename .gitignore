@@ -1,1 +1,5 @@
-mm_v01
+#ignora archivos ejecutables
+*.out
+*.exe
+#ignora carpeta de vscode
+*.vscode/
