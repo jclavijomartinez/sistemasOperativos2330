@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
+#include <sys/types.h>
 
 void printmat(int filas, int cols, int** matrix){
     for (int i = 0; i < filas; i++)
@@ -60,13 +60,14 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int ***matriz)
 
     for (int i = 0; i < filas; i++) {
         leidos = getline(&linea, &longitud, arch);
+        //printf("el contenido de leidos es: %c\n",leidos);
         if (leidos == -1) {
             perror("Error al leer desde el archivo");
             free(linea);
             fclose(arch);
             exit(EXIT_FAILURE);
         }
-
+        
         char *token = strtok(linea, " ");
         for (int j = 0; j < cols && token != NULL; j++) {
             int valor;
@@ -81,7 +82,6 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int ***matriz)
             token = strtok(NULL, " ");
         }
     }
-
     free(linea);
     printf("Los contenidos del archivo se cargaron exitosamente en memoria\n");
     fclose(arch);
