@@ -36,6 +36,7 @@ bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matr
                     }
                 }
             }
+            printf("el proceso encontro %d elementos distintos de cero entre las filas %d y %d\n",count,inicio,fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -47,7 +48,10 @@ bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matr
         if (WIFEXITED(status)) {
             totalElementosDiferentesDeCero += WEXITSTATUS(status);
         }
+
     }
+    
+    printf("el total que escucha el proceso padre es %d\n",totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz
     int totalElementos = nfilas * nfilas;
@@ -275,6 +279,9 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         crearmatriz(numfils,numcols,&matriz);
         //se llama a la funcion que almacena los elementos en memoria
         cargarmatriz(arch,archivo,numfils,numcols,&matriz);
+        // se imprime la matriz del archivo
+        printf("La matriz en memoria se ve asi: \n\n");
+        printmat(numfils,numcols,matriz);
         //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
         //que numproc < #de nucleos del procesasdor
         if (num_procesadores < 1) {
@@ -284,7 +291,6 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
             printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
-        printmat(numfils,numcols,matriz);
         //se hace la division en grupos de la matriz, y se verifica si es sparse
         // int porcentaje, int nfilas, int numprocesos, int ***matriz
         if (numfils%numproc==0) {
