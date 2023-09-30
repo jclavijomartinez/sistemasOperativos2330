@@ -299,32 +299,32 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         //se hace la division en grupos de la matriz, y se verifica si es sparse
         // int porcentaje, int nfilas, int numprocesos, int ***matriz
         if (numfils%numproc==0) {
-        	if (divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz)){
+        	if (divisionhorizontal(numpor, nfilas, ncols, numproc, ***matriz)){
         		printf("La matriz es dispersa.\n"); //es sparse
         	} else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	}
         } else if (numcols%numproc==0) {
-        	if (divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz)){
+        	if (divisionvertical(numpor, nfilas, ncols, numproc, ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
         	} else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	}
         } else {
             if (numfils > numcols){
-                if (divisionhorizontal(numpor, numfils, numproc, &matriz)){
+                if (divisionhorizontal(numpor, nfilas, ncols, numproc, ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else if (numcols > numfils){
-                if (divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz)){
+                if (divisionvertical(numpor, nfilas, ncols, numproc, ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else{
-                if (divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz)){
+                if (divisionhorizontal(numpor, nfilas, ncols, numproc, ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
