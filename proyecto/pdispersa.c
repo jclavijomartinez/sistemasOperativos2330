@@ -14,12 +14,24 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
-void divisionhorizontal(){
-    //phldr
+/*
+- matriz
+- numfilas
+- numproc
+*/
+int divisionhorizontal(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
+    int elem_diff_cero =0;
+    return elem_diff_cero:
 }
 
-void divisionvertical(){
-    //phldr
+int divisionvertical(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
+    int elem_diff_cero =0;
+    return elem_diff_cero:
+}
+
+int divisionirregular(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
+    int elem_diff_cero =0;
+    return elem_diff_cero:
 }
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
@@ -200,10 +212,22 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
             perror("Error al obtener el número de procesadores");
             return 1;
         } else if (numproc <= num_procesadores){
-            printf("no es posible ejecutar el programa ya que se piden %d y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
+            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
-        printmat(numfils,numcols,matriz);
+        //printmat(numfils,numcols,matriz);
+        //se hace la division en grupos de la matriz
+        if (numproc%numfils==0) {
+            divisionhorizontal();
+        } else if (numproc%numfils==0) {
+            divisionvertical();
+        } else {
+            divisionirregular();
+        }
+        
+        
+        
+        
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;

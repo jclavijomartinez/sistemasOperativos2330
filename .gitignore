@@ -9,3 +9,4 @@
 !.vscode/extensions.json
 *.code-workspace
 ./proyecto/.vscode/*
+/protecto/.vscode/*
