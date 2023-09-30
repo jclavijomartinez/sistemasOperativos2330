@@ -12,57 +12,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <stdbool.h>
-
-void divisionhorizontal(){
-    //phldr
-}
-
-void divisionvertical(){
-    //phldr
-}
-
-bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
-    FILE *file = fopen(archivo, "r");
-
-    if (file == NULL) {
-        perror("Error al abrir el archivo");
-        return false;
-    }
-
-    int num_filas_arch = 0;
-    int num_columnas_arch = 0;
-    int elementos_primera_linea = 0;
-    char linea[1024];
-    if(fgets(linea, sizeof(linea), file) != NULL){
-        char *token = strtok(linea, " "); // Separa por espacios o tabulaciones
-        while (token != NULL) {
-            elementos_primera_linea++;
-            token = strtok(NULL, " ");
-        }
-        elementos_primera_linea-=1;
-        num_columnas_arch=elementos_primera_linea;
-    }
-
-    while (fgets(linea, sizeof(linea), file)) {
-        num_filas_arch++;
-        char *token = strtok(linea, " \t"); // Dividir la línea en tokens basados en espacios o tabulaciones
-        while (token) {
-
-            token = strtok(NULL, " \t");
-        }
-    }
-    num_filas_arch++;
-    fclose(file); 
-    printf("Número de filas: %d\n", num_filas_arch);
-    printf("Número de columnas: %d\n", num_columnas_arch);
-
-    if (filas == num_filas_arch && cols == num_columnas_arch) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 void printmat(int filas, int cols, int** matrix){
     for (int i = 0; i < filas; i++)
@@ -152,7 +101,6 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     int numpor=-1;
     int opc;
     int **matriz;
-    long num_procesadores = sysconf(_SC_NPROCESSORS_ONLN);
     //se verifica que lo que haya pasado por consola del usr si tenga el largo esperado
     if (argc < 10)
     {
@@ -182,32 +130,12 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
                 exit(EXIT_FAILURE);
         }
     }
-    if (numproc%2!=0){
-        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
-        return -1;
-    }
-    //verificar que las cols y filas que me pasa el usr y las del arch sean las mismas, si es verdad, 
-    //ejecute todo el cuerpo del codigo
-    if(filasycolsdelarchivo(archivo,numfils,numcols)){
-        //se llama la funcion que reserva el espacio de memoria para la matriz
-        crearmatriz(numfils,numcols,&matriz);
-        //se verifica que el computador en donde se ejecute el programa 
-        //se llama a la funcion que almacena los elementos en memoria
-        cargarmatriz(arch,archivo,numfils,numcols,&matriz);
-        //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
-        //que numproc < #de nucleos del procesasdor
-        if (num_procesadores < 1) {
-            perror("Error al obtener el número de procesadores");
-            return 1;
-        } else if (numproc <= num_procesadores){
-            printf("no es posible ejecutar el programa ya que se piden %d y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
-            return -1;
-        }
-        printmat(numfils,numcols,matriz);
-    } else {
-        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
-        return -1;
-    }
+    //se llama la funcion que reserva el espacio de memoria para la matriz
+    crearmatriz(numfils,numcols,&matriz);
+    //printmat(numfils,numcols,matriz);
+    //se llama a la funcion que almacena los elementos en memoria
+    cargarmatriz(arch,archivo,numfils,numcols,&matriz);
+    printmat(numfils,numcols,matriz);
     //se liberan los recursos de memoria usados, empezando por la matriz
     free(matriz);
     //printf("Filas: %d\n", numfils);
