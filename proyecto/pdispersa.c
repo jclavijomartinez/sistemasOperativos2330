@@ -56,18 +56,13 @@ bool divisionhorizontal(int numpor, int nfilas, int numprocesos, int ***matriz) 
         }
     }
 
-    // Calcula el porcentaje de elementos diferentes de cero en la matriz
+    // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int totalElementos = nfilas * nfilas;
-    double porcentajeReal = (double)totalElementosDiferentesDeCero / totalElementos * 100;
+    int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
 
     // Decide si la matriz es dispersa o no
-    if (porcentajeReal <= numpor) {
-        return true; // La matriz es dispersa
-    } else {
-        return false; // La matriz no es dispersa
-    }
+    return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
 }
-
 
 
 bool divisionvertical(int numpor, int ncols, int numprocesos, int ***matriz) {
@@ -108,11 +103,10 @@ bool divisionvertical(int numpor, int ncols, int numprocesos, int ***matriz) {
     }
 
     int totalElementos = ncols * ncols; // Total de elementos en la matriz
-    double porcentajeReal = (double)totalElementosDiferentesDeCero / totalElementos * 100;
+    int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
 
     return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
 }
-
 
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
