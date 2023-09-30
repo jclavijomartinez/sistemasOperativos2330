@@ -63,7 +63,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numprocesos, int ***matriz) 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int totalElementos = nfilas * nfilas;
     int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
-
+    printf("el numero de ceros debe ser mayor o igual a %d\n",porcentajeReal);
     // Decide si la matriz es dispersa o no
     return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
 }
