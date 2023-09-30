@@ -18,7 +18,7 @@
 #include <stdbool.h>
 
 
-bool divisionhorizontal(int numpor, int nfilas, int numprocesos, int ***matriz) {
+bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz) {
     int filasPorProceso = nfilas / numprocesos;
     int filasRestantes = nfilas % numprocesos;
     int totalElementosDiferentesDeCero = 0;
@@ -61,15 +61,15 @@ bool divisionhorizontal(int numpor, int nfilas, int numprocesos, int ***matriz) 
     printf("el total que escucha el proceso padre es %d\n",totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
-    int totalElementos = nfilas * nfilas;
+    int totalElementos = nfilas * numcols;
     int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
 
-    // Decide si la matriz es dispersa o no
+    // Decide si la matriz es dispersa o no 
     return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
 }
 
 
-bool divisionvertical(int numpor, int ncols, int numprocesos, int ***matriz) {
+bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz) {
     int colsPorProceso = ncols / numprocesos;
     int colsRestantes = ncols % numprocesos;
     int totalElementosDiferentesDeCero = 0;
@@ -106,7 +106,7 @@ bool divisionvertical(int numpor, int ncols, int numprocesos, int ***matriz) {
         }
     }
 
-    int totalElementos = ncols * ncols; // Total de elementos en la matriz
+    int totalElementos = ncols * nfilas; // Total de elementos en la matriz
     int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
 
     return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         //se hace la division en grupos de la matriz, y se verifica si es sparse
         // int porcentaje, int nfilas, int numprocesos, int ***matriz
         if (numfils%numproc==0) {
-        	if (divisionhorizontal(numpor,numfils,numproc,&matriz)){
+        	if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
         		printf("La matriz es dispersa.\n"); //es sparse
         	} else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
