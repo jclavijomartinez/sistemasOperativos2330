@@ -1,6 +1,9 @@
 /****************************************************************
- * Fecha: 10-09-2023
- * Autor: Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co)
+ * Fecha: 01-10-2023
+ * Autores: 
+ *  - Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co), 
+ *  - Santiago Mesa Niño (santiagoa.mesan@javeriana.edu.co), 
+ *  - Juliana Lugo Martínez (julugo@javeriana.edu.co)
  * Tema: proyecto 1
  * Objetivo: 
  ***************************************************************/
@@ -14,39 +17,86 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
+bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matriz) {
+    int filasPorProceso = nfilas / numprocesos;
+    int totalElementosDiferentesDeCero = 0;
 
-/*
-int divisionMatrizRegular(int numproc, int numx, int **matriz) {
-    int count = 0;
-    if (numproc % numx == 0) {
-        int division = numproc / numx;
-        for (int i = 0; i < division; i++) {
-            pid_t pid = fork();
-            if (pid == 0) { // Proceso hijo
-                for (int j = i * numx; j < (i + 1) * numx; j++) {
-                    for (int k = 0; k < numx; k++) {
-                        if (matriz[j][k] != 0) {
-                            count++;
-                        }
+    for (int i = 0; i < numprocesos; i++) {
+        pid_t pid = fork();
+
+        if (pid == 0) { // Proceso hijo
+            int inicio = i * filasPorProceso;
+            int fin = inicio + filasPorProceso;
+            int count = 0;
+
+            for (int j = inicio; j < fin; j++) {
+                for (int k = 0; k < nfilas; k++) {
+                    if ((*matriz)[j][k] != 0) {
+                        count++;
                     }
                 }
-                return count; // Devuelve el conteo de elementos diferentes de 0
             }
+            exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
-    return -1; // En caso de que numproc % numx no sea 0
-}
-*/
 
-bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
-    bool essparse = false;
-    return essparse;
+    // Proceso padre recoge los resultados de los procesos hijos
+    for (int i = 0; i < numprocesos; i++) {
+        int status;
+        pid_t pid = wait(&status);
+        if (WIFEXITED(status)) {
+            totalElementosDiferentesDeCero += WEXITSTATUS(status);
+        }
+    }
+
+    // Calcula el porcentaje de elementos diferentes de cero en la matriz
+    int totalElementos = nfilas * nfilas;
+    double porcentajeReal = (double)totalElementosDiferentesDeCero / totalElementos * 100;
+
+    // Decide si la matriz es dispersa o no
+    if (porcentajeReal <= porcentaje) {
+        return true; // La matriz es dispersa
+    } else {
+        return false; // La matriz no es dispersa
+    }
 }
 
-bool divisionvertical(int porcentaje, int ncols, int numprocesos, int ***matriz){ //se basa en el numero de filas
-    bool essparse = false;
-    return essparse;
+
+bool divisionvertical(int porcentaje, int ncols, int numprocesos, int ***matriz) {
+    int division = ncols / numprocesos; // Número de columnas por proceso
+    int totalElementos = 0;
+    int totalNoCeros = 0;
+
+    for (int i = 0; i < numprocesos; i++) {
+        pid_t pid = fork();
+        if (pid == 0) { // Proceso hijo
+            int count = 0;
+            for (int j = i * division; j < (i + 1) * division; j++) {
+                for (int k = 0; k < ncols; k++) {
+                    if ((*matriz)[k][j] != 0) {
+                        count++;
+                    }
+                }
+            }
+            exit(count); // Devuelve el conteo de elementos diferentes de 0
+        }
+    }
+
+    // Proceso padre recopila resultados
+    for (int i = 0; i < numprocesos; i++) {
+        int status;
+        wait(&status);
+        if (WIFEXITED(status)) {
+            totalNoCeros += WEXITSTATUS(status);
+        }
+    }
+
+    totalElementos = ncols * ncols; // Total de elementos en la matriz
+    int porcentajeNoCeros = (totalNoCeros * 100) / totalElementos;
+
+    return porcentajeNoCeros <= porcentaje; // Retorna true si la matriz es dispersa, false en caso contrario
 }
+
 
 bool divisionirregular(int porcentaje, int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
     bool essparse = false;
@@ -239,22 +289,37 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         // int porcentaje, int nfilas, int numprocesos, int ***matriz
         if (numfils%numproc==0) {
         	if (divisionhorizontal(numpor,numfils,numproc,&matriz)){
-        		printf(); //es sparse
+        		printf("La matriz es dispersa.\n"); //es sparse
         	} else {
-        		printf(); //NO es sparse
+        		printf("La matriz no es dispersa.\n"); //NO es sparse
         	}
         } else if (numcols%numproc==0) {
-        	if (divisionvertical()){
-        		printf();// es sparse
+        	if (divisionvertical(numpor,numcols,numproc,&matriz)){
+        		printf("La matriz es dispersa.\n");// es sparse
         	} else {
-        		printf(); //NO es sparse
+        		printf("La matriz no es dispersa.\n"); //NO es sparse
         	}
         } else {
-        	if (divisionirregular()){
-        		printf();// es sparse
-        	} else {
-        		printf(); //NO es sparse
-        	}
+            if (numfils > numcols){
+                if (divisionhorizontal(porcentaje, numfils, numprocesos, matriz)){
+        		printf("La matriz es dispersa.\n");// es sparse
+                } else {
+        		printf("La matriz no es dispersa.\n"); //NO es sparse
+        	    }
+            }else if (numcols > numfils){
+                if (divisionvertical(porcentaje, numcols, numprocesos, matriz)){
+        		printf("La matriz es dispersa.\n");// es sparse
+                } else {
+        		printf("La matriz no es dispersa.\n"); //NO es sparse
+        	    }
+            }else{
+                if (divisionhorizontal(porcentaje, numfils, numprocesos, matriz)){
+        		printf("La matriz es dispersa.\n");// es sparse
+                } else {
+        		printf("La matriz no es dispersa.\n"); //NO es sparse
+        	    }
+            }
+            
         }
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
