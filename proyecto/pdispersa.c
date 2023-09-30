@@ -17,8 +17,10 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
-bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matriz) {
+
+bool divisionhorizontal(int numpor, int nfilas, int numprocesos, int ***matriz) {
     int filasPorProceso = nfilas / numprocesos;
+    int filasRestantes = nfilas % numprocesos;
     int totalElementosDiferentesDeCero = 0;
 
     for (int i = 0; i < numprocesos; i++) {
@@ -27,8 +29,13 @@ bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matr
         if (pid == 0) { // Proceso hijo
             int inicio = i * filasPorProceso;
             int fin = inicio + filasPorProceso;
-            int count = 0;
 
+            // Añade las filas restantes al último proceso
+            if (i == numprocesos - 1) {
+                fin += filasRestantes;
+            }
+
+            int count = 0;
             for (int j = inicio; j < fin; j++) {
                 for (int k = 0; k < nfilas; k++) {
                     if ((*matriz)[j][k] != 0) {
@@ -54,7 +61,7 @@ bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matr
     double porcentajeReal = (double)totalElementosDiferentesDeCero / totalElementos * 100;
 
     // Decide si la matriz es dispersa o no
-    if (porcentajeReal <= porcentaje) {
+    if (porcentajeReal <= numpor) {
         return true; // La matriz es dispersa
     } else {
         return false; // La matriz no es dispersa
@@ -62,16 +69,25 @@ bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matr
 }
 
 
-bool divisionvertical(int porcentaje, int ncols, int numprocesos, int ***matriz) {
-    int division = ncols / numprocesos; // Número de columnas por proceso
-    int totalElementos = 0;
-    int totalNoCeros = 0;
+
+bool divisionvertical(int numpor, int ncols, int numprocesos, int ***matriz) {
+    int colsPorProceso = ncols / numprocesos;
+    int colsRestantes = ncols % numprocesos;
+    int totalElementosDiferentesDeCero = 0;
 
     for (int i = 0; i < numprocesos; i++) {
         pid_t pid = fork();
         if (pid == 0) { // Proceso hijo
+            int inicio = i * colsPorProceso;
+            int fin = inicio + colsPorProceso;
+
+            // Añade las columnas restantes al último proceso
+            if (i == numprocesos - 1) {
+                fin += colsRestantes;
+            }
+
             int count = 0;
-            for (int j = i * division; j < (i + 1) * division; j++) {
+            for (int j = inicio; j < fin; j++) {
                 for (int k = 0; k < ncols; k++) {
                     if ((*matriz)[k][j] != 0) {
                         count++;
@@ -87,21 +103,16 @@ bool divisionvertical(int porcentaje, int ncols, int numprocesos, int ***matriz)
         int status;
         wait(&status);
         if (WIFEXITED(status)) {
-            totalNoCeros += WEXITSTATUS(status);
+            totalElementosDiferentesDeCero += WEXITSTATUS(status);
         }
     }
 
-    totalElementos = ncols * ncols; // Total de elementos en la matriz
-    int porcentajeNoCeros = (totalNoCeros * 100) / totalElementos;
+    int totalElementos = ncols * ncols; // Total de elementos en la matriz
+    double porcentajeReal = (double)totalElementosDiferentesDeCero / totalElementos * 100;
 
-    return porcentajeNoCeros <= porcentaje; // Retorna true si la matriz es dispersa, false en caso contrario
+    return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
 }
 
-
-bool divisionirregular(int porcentaje, int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
-    bool essparse = false;
-    return essparse;
-}
 
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
