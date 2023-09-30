@@ -21,17 +21,17 @@
 */
 int divisionhorizontal(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
     int elem_diff_cero =0;
-    return elem_diff_cero:
+    return elem_diff_cero;
 }
 
 int divisionvertical(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
     int elem_diff_cero =0;
-    return elem_diff_cero:
+    return elem_diff_cero;
 }
 
 int divisionirregular(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
     int elem_diff_cero =0;
-    return elem_diff_cero:
+    return elem_diff_cero;
 }
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
@@ -203,7 +203,6 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     if(filasycolsdelarchivo(archivo,numfils,numcols)){
         //se llama la funcion que reserva el espacio de memoria para la matriz
         crearmatriz(numfils,numcols,&matriz);
-        //se verifica que el computador en donde se ejecute el programa 
         //se llama a la funcion que almacena los elementos en memoria
         cargarmatriz(arch,archivo,numfils,numcols,&matriz);
         //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
@@ -211,18 +210,20 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         if (num_procesadores < 1) {
             perror("Error al obtener el número de procesadores");
             return 1;
-        } else if (numproc <= num_procesadores){
+        } else if (numproc > num_procesadores){
+            printf("num procesos: %d\n",numproc);
+            printf("num cores: %ld\n",num_procesadores);
             printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
-        //printmat(numfils,numcols,matriz);
+        printmat(numfils,numcols,matriz);
         //se hace la division en grupos de la matriz
         if (numproc%numfils==0) {
-            divisionhorizontal();
-        } else if (numproc%numfils==0) {
-            divisionvertical();
+            divisionhorizontal(numfils,numproc,&matriz);
+        } else if (numproc%numcols==0) {
+            divisionvertical(numcols,numproc,&matriz);
         } else {
-            divisionirregular();
+            divisionirregular(numfils,numproc,&matriz);
         }
         
         
@@ -234,6 +235,5 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
     }
     //se liberan los recursos de memoria usados, empezando por la matriz
     free(matriz);
-    //printf("Filas: %d\n", numfils);
 	return 0;
 }
