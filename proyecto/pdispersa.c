@@ -301,19 +301,19 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         	}
         } else {
             if (numfils > numcols){
-                if (divisionhorizontal(porcentaje, numfils, numprocesos, matriz)){
+                if (divisionhorizontal(numpor, numfils, numproc, &matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else if (numcols > numfils){
-                if (divisionvertical(porcentaje, numcols, numprocesos, matriz)){
+                if (divisionvertical(numpor, numcols, numproc, &matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else{
-                if (divisionhorizontal(porcentaje, numfils, numprocesos, matriz)){
+                if (divisionhorizontal(numpor, numfils, numproc,& matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse

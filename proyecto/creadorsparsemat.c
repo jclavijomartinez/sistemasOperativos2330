@@ -41,11 +41,10 @@ int main(int argc, char *argv[]) {
         for (int j = 0; j < cols; j++) {
             int valor = rand() % 100; // Genera un valor aleatorio entre 0 y 99
             if (valor < porcentaje) {
-                valor = 0; // Si el valor aleatorio es menor que el porcentaje, establece el valor en 0
+                fprintf(fileA, "1 ");
+            } else {
+                fprintf(fileA, "0 ");
             }
-
-            // Imprime el valor en el archivo
-            fprintf(fileA, "%d ", valor);
         }
         fprintf(fileA, "\n"); // Nueva línea después de cada fila
     }
