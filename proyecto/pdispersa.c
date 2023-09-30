@@ -63,8 +63,8 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int totalElementos = nfilas * numcols;
     int numerodeceros = totalElementos - totalElementosDiferentesDeCero;
-    int threshold = totalElementos*(numpor/100);
-    printf("el numero de ceros debe ser mayor o igual a %d\n\n",threshold);
+    double threshold = totalElementos*(numpor/100);
+    printf("el numero de ceros debe ser mayor o igual a %d\n\n",(int)threshold);
     // Decide si la matriz es dispersa o no
     return numerodeceros >= (totalElementos*(numpor/100)); // Retorna true si la matriz es dispersa, false en caso contrario
 }
