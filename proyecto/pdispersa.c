@@ -14,25 +14,45 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
+
 /*
-- matriz
-- numfilas
-- numproc
+int divisionMatrizRegular(int numproc, int numx, int **matriz) {
+    int count = 0;
+    if (numproc % numx == 0) {
+        int division = numproc / numx;
+        for (int i = 0; i < division; i++) {
+            pid_t pid = fork();
+            if (pid == 0) { // Proceso hijo
+                for (int j = i * numx; j < (i + 1) * numx; j++) {
+                    for (int k = 0; k < numx; k++) {
+                        if (matriz[j][k] != 0) {
+                            count++;
+                        }
+                    }
+                }
+                return count; // Devuelve el conteo de elementos diferentes de 0
+            }
+        }
+    }
+    return -1; // En caso de que numproc % numx no sea 0
+}
 */
-int divisionhorizontal(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+
+bool divisionhorizontal(int porcentaje, int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
+    bool essparse = false;
+    return essparse;
 }
 
-int divisionvertical(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+bool divisionvertical(int porcentaje, int ncols, int numprocesos, int ***matriz){ //se basa en el numero de filas
+    bool essparse = false;
+    return essparse;
 }
 
-int divisionirregular(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+bool divisionirregular(int porcentaje, int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
+    bool essparse = false;
+    return essparse;
 }
+
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
@@ -211,24 +231,31 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
             perror("Error al obtener el número de procesadores");
             return 1;
         } else if (numproc > num_procesadores){
-            printf("num procesos: %d\n",numproc);
-            printf("num cores: %ld\n",num_procesadores);
             printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
         printmat(numfils,numcols,matriz);
-        //se hace la division en grupos de la matriz
-        if (numproc%numfils==0) {
-            divisionhorizontal(numfils,numproc,&matriz);
-        } else if (numproc%numcols==0) {
-            divisionvertical(numcols,numproc,&matriz);
+        //se hace la division en grupos de la matriz, y se verifica si es sparse
+        // int porcentaje, int nfilas, int numprocesos, int ***matriz
+        if (numfils%numproc==0) {
+        	if (divisionhorizontal(numpor,numfils,numproc,&matriz)){
+        		printf(); //es sparse
+        	} else {
+        		printf(); //NO es sparse
+        	}
+        } else if (numcols%numproc==0) {
+        	if (divisionvertical()){
+        		printf();// es sparse
+        	} else {
+        		printf(); //NO es sparse
+        	}
         } else {
-            divisionirregular(numfils,numproc,&matriz);
+        	if (divisionirregular()){
+        		printf();// es sparse
+        	} else {
+        		printf(); //NO es sparse
+        	}
         }
-        
-        
-        
-        
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;
