@@ -299,13 +299,13 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         //se hace la division en grupos de la matriz, y se verifica si es sparse
         // int porcentaje, int nfilas, int numprocesos, int ***matriz
         if (numfils%numproc==0) {
-        	if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
+        	if (divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz)){
         		printf("La matriz es dispersa.\n"); //es sparse
         	} else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	}
         } else if (numcols%numproc==0) {
-        	if (divisionvertical(numpor,numcols,numproc,&matriz)){
+        	if (divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
         	} else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
@@ -318,13 +318,13 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else if (numcols > numfils){
-                if (divisionvertical(numpor, numcols, numproc, &matriz)){
+                if (divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
         	    }
             }else{
-                if (divisionhorizontal(numpor, numfils, numproc,& matriz)){
+                if (divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz)){
         		printf("La matriz es dispersa.\n");// es sparse
                 } else {
         		printf("La matriz no es dispersa.\n"); //NO es sparse
