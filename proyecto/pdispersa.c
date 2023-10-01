@@ -64,7 +64,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     int totalElementos = nfilas * numcols;
     int numerodeceros = totalElementos - totalElementosDiferentesDeCero;
     double threshold = totalElementos*(numpor/100);
-    printf("el numero de ceros debe ser mayor o igual a %d\n\n",(int)threshold);
+    printf("el numero de ceros debe ser mayor o igual a %d\n\n",threshold);
     // Decide si la matriz es dispersa o no
     return numerodeceros >= (totalElementos*(numpor/100)); // Retorna true si la matriz es dispersa, false en caso contrario
 }
@@ -163,7 +163,7 @@ void printmat(int filas, int cols, int** matrix){
         {
             printf("%d ",matrix[i][j]);
         }
-        printf("\n\n");
+        printf("\n");
     }
     
 }
