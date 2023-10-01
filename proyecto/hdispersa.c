@@ -269,7 +269,6 @@ int main(int argc, char *argv[]){
     int numpor=-1;
     int opc;
     int **matriz;
-    long num_procesadores = sysconf(_SC_NPROCESSORS_ONLN);
 
     // Inicializar la librería de hilos
     pthread_attr_t attr;
@@ -304,11 +303,6 @@ int main(int argc, char *argv[]){
                 fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nthreads -p porcentaje\n\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
-    }
-
-    if (numthreads % 2 != 0) {
-        printf("recuerda que necesito que el numero de hilos sea PAR revisa!\n\n");
-        return -1;
     }
 
     // verificar que las cols y filas que me pasa el usr y las del arch sean las mismas
@@ -371,4 +365,5 @@ int main(int argc, char *argv[]){
     free(matriz);
     return 0;
 }
+
 
