@@ -37,13 +37,13 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
 
             int count = 0;
             for (int j = inicio; j < fin; j++) {
-                for (int k = 0; k < nfilas; k++) {
+                for (int k = 0; k < numcols; k++) {
                     if ((*matriz)[j][k] != 0) {
                         count++;
                     }
                 }
             }
-            printf("el proceso hijo con ID: %d encontro %d elementos distintos de cero entre las filas %d y %d\n\n",pid,count,inicio,fin);
+            printf("el proceso hijo con ID: %d encontro %d elementos distintos de cero entre las filas %d y %d\n\n", getpid(), count, inicio, fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -55,19 +55,20 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
         if (WIFEXITED(status)) {
             totalElementosDiferentesDeCero += WEXITSTATUS(status);
         }
-
     }
     
-    printf("el total que escucha el proceso padre es %d\n\n",totalElementosDiferentesDeCero);
+    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
-    int total = nfilas*numcols;
-    int totalceros = round(total * (numpor/100));
-    int totalCalcDiffDeCero = total - totalceros;
-    printf("el numero de ceros debe ser %d\n\n",totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalCalcDiffDeCero);
+    int total = nfilas * numcols;
+    int totalceros = round(total * (numpor / 100.0)); // Asegúrate de que sea una división flotante
+    int totalNoCerosPermitidos = total - totalceros;
+    
+    printf("el numero de ceros debe ser %d\n\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    
     // Decide si la matriz es dispersa o no
-    return totalCalcDiffDeCero == totalElementosDiferentesDeCero; // Retorna true si la matriz es dispersa, false en caso contrario
+    return totalElementosDiferentesDeCero <= totalNoCerosPermitidos;
 }
 
 
@@ -89,12 +90,13 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
 
             int count = 0;
             for (int j = inicio; j < fin; j++) {
-                for (int k = 0; k < ncols; k++) {
+                for (int k = 0; k < nfilas; k++) {
                     if ((*matriz)[k][j] != 0) {
                         count++;
                     }
                 }
             }
+            printf("el proceso hijo con ID: %d encontro %d elementos distintos de cero entre las columnas %d y %d\n\n", getpid(), count, inicio, fin);
             exit(count); // Devuelve el conteo de elementos diferentes de 0
         }
     }
@@ -108,10 +110,15 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
         }
     }
 
-    int totalElementos = ncols * nfilas; // Total de elementos en la matriz
-    int porcentajeReal = (totalElementosDiferentesDeCero * 100) / totalElementos;
-
-    return porcentajeReal <= numpor; // Retorna true si la matriz es dispersa, false en caso contrario
+    // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
+    int total = ncols * nfilas;
+    int totalceros = round(total * (numpor/100.0)); // Asegurarse de que la división sea en punto flotante
+    int totalCalcDiffDeCero = total - totalceros;
+    printf("el numero de ceros debe ser %d\n\n",totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalCalcDiffDeCero);
+    
+    // Decide si la matriz es dispersa o no
+    return totalElementosDiferentesDeCero < (total - totalceros); // Retorna true si la matriz es dispersa, false en caso contrario
 }
 
 
@@ -289,6 +296,7 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         // se imprime la matriz del archivo
         printf("La matriz en memoria se ve asi: \n\n");
         printmat(numfils,numcols,matriz);
+        printf("\n");
         //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
         //que numproc < #de nucleos del procesasdor
         if (num_procesadores < 1) {
