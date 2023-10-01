@@ -35,11 +35,27 @@ void generateRandomValues(SparseMatrix *matrix, int nonzeroCount) {
     for (int i = 1; i <= nonzeroCount; i++) {
         int row = rand() % matrix->rows;
         int col = rand() % matrix->cols;
-        if (row != col){
-        matrix->matrix[row][col] = 1; // Valor aleatorio entre 1 y 100
-        } else {
-            matrix->matrix[row][col+1] = 1; 
+        // Verificar si la celda está ocupada
+        if (matrix->matrix[row][col] == 0) {
+            matrix->matrix[row][col] = 1; // Colocar un elemento
+
+            // Incrementar el contador solo si se coloca un elemento
+            i++;
         }
+
+        // Moverse a la siguiente celda (fila, columna)
+        col++;
+        if (col >= matrix->cols) {
+            // Si se llega al final de la columna, continuar en la siguiente fila desde la columna 0
+            row++;
+            col = 0;
+        }
+
+        // Volver a la primera fila si se llega al final de la matriz
+        if (row >= matrix->rows) {
+            row = 0;
+        }
+
     }
 }
 

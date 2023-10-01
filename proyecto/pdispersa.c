@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdbool.h>
-
+#include <math.h>
 
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz) {
     int filasPorProceso = nfilas / numprocesos;
@@ -43,7 +43,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
                     }
                 }
             }
-            printf("el proceso hijo encontro %d elementos distintos de cero entre las filas %d y %d\n\n",count,inicio,fin);
+            printf("el proceso hijo con ID: %d encontro %d elementos distintos de cero entre las filas %d y %d\n\n",pid,count,inicio,fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -61,12 +61,13 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     printf("el total que escucha el proceso padre es %d\n\n",totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
-    int totalElementos = nfilas * numcols;
-    int numerodeceros = totalElementos - totalElementosDiferentesDeCero;
-    double threshold = totalElementos*(numpor/100);
-    printf("el numero de ceros debe ser mayor o igual a %d\n\n",threshold);
+    int total = nfilas*numcols;
+    int totalceros = round(total * (numpor/100));
+    int totalCalcDiffDeCero = total - totalceros;
+    printf("el numero de ceros debe ser %d\n\n",totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalCalcDiffDeCero);
     // Decide si la matriz es dispersa o no
-    return numerodeceros >= (totalElementos*(numpor/100)); // Retorna true si la matriz es dispersa, false en caso contrario
+    return totalCalcDiffDeCero == totalElementosDiferentesDeCero; // Retorna true si la matriz es dispersa, false en caso contrario
 }
 
 
@@ -286,7 +287,7 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
         //se llama a la funcion que almacena los elementos en memoria
         cargarmatriz(arch,archivo,numfils,numcols,&matriz);
         // se imprime la matriz del archivo
-        printf("La matriz en memoria se ve asi: \n\n\n\n");
+        printf("La matriz en memoria se ve asi: \n\n");
         printmat(numfils,numcols,matriz);
         //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
         //que numproc < #de nucleos del procesasdor
