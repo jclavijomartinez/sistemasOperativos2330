@@ -68,9 +68,12 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
     
     // Decide si la matriz es dispersa o no
+    if (totalceros==0 || totalceros <= round(total * (10/100.0))){
+        return false;
+    }
+    
     return totalElementosDiferentesDeCero <= totalNoCerosPermitidos;
 }
-
 
 bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz) {
     int colsPorProceso = ncols / numprocesos;
@@ -118,7 +121,11 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
     printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalCalcDiffDeCero);
     
     // Decide si la matriz es dispersa o no
-    return totalElementosDiferentesDeCero < (total - totalceros); // Retorna true si la matriz es dispersa, false en caso contrario
+    if (totalceros==0 || totalceros <= round(total * (10/100.0))){
+         return false;
+     }
+
+    return totalElementosDiferentesDeCero <= (total - totalceros); // Retorna true si la matriz es dispersa, false en caso contrario
 }
 
 
