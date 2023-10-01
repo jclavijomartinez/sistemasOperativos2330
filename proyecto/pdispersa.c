@@ -116,18 +116,18 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int total = ncols * nfilas;
     int totalceros = round(total * (numpor/100.0)); // Asegurarse de que la división sea en punto flotante
-    int totalCalcDiffDeCero = total - totalceros;
-    printf("el numero de ceros debe ser %d\n\n",totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalCalcDiffDeCero);
+    int totalNoCerosPermitidos = total - totalceros;
     
-    // Decide si la matriz es dispersa o no
+    printf("el numero de ceros debe ser %d\n\n",totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalNoCerosPermitidos);
     if (totalceros==0 || totalceros <= round(total * (10/100.0))){
          return false;
      }
+    
+    // Decide si la matriz es dispersa o no
 
-    return totalElementosDiferentesDeCero <= (total - totalceros); // Retorna true si la matriz es dispersa, false en caso contrario
+    return totalElementosDiferentesDeCero <= totalNoCerosPermitidos;
 }
-
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
