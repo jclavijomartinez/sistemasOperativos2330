@@ -10,29 +10,135 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 #include <stdbool.h>
+#include <math.h>
+#include <pthread.h>
 
-/*
-- matriz
-- numfilas
-- numproc
-*/
-int divisionhorizontal(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de filas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+typedef struct {
+    int inicio;
+    int fin;
+    int numcols;
+    int **matriz;
+} ThreadData;
+
+void *threadFuncHorizontal(void *arg) {
+    ThreadData *data = (ThreadData *)arg;
+    int count = 0;
+    for (int j = data->inicio; j < data->fin; j++) {
+        for (int k = 0; k < data->numcols; k++) {
+            if (data->matriz[j][k] != 0) {
+                count++;
+            }
+        }
+    }
+    return (void *)(intptr_t)count;
 }
 
-int divisionvertical(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+void *threadFuncVertical(void *arg) {
+    ThreadData *data = (ThreadData *)arg;
+    int count = 0;
+    for (int j = data->inicio; j < data->fin; j++) {
+        for (int k = 0; k < data->numcols; k++) {
+            if (data->matriz[k][j] != 0) {
+                count++;
+            }
+        }
+    }
+    return (void *)(intptr_t)count;
 }
 
-int divisionirregular(int nfilas, int numprocesos, int ***matriz){ //se basa en el numero de columnas
-    int elem_diff_cero =0;
-    return elem_diff_cero;
+
+bool divisionhorizontal(int numpor, int nfilas, int numcols, int numthreads, int ***matriz) {
+    int filasPorThread = nfilas / numthreads;
+    int filasRestantes = nfilas % numthreads;
+    int totalElementosDiferentesDeCero = 0;
+    pthread_t threads[numthreads];
+    ThreadData threadData[numthreads];
+
+    for (int i = 0; i < numthreads; i++) {
+        threadData[i].inicio = i * filasPorThread;
+        threadData[i].fin = threadData[i].inicio + filasPorThread;
+        threadData[i].numcols = numcols;
+        threadData[i].matriz = *matriz;
+
+        if (i == numthreads - 1) {
+            threadData[i].fin += filasRestantes;
+        }
+
+        pthread_create(&threads[i], NULL, threadFuncHorizontal, &threadData[i]);
+    }
+
+    for (int i = 0; i < numthreads; i++) {
+        void *ret;
+        pthread_join(threads[i], &ret);
+        totalElementosDiferentesDeCero += (intptr_t)ret;
+    }
+
+    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+
+    // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
+    int total = nfilas * numcols;
+    int totalceros = round(total * (numpor / 100.0)); // Asegúrate de que sea una división flotante
+    int totalNoCerosPermitidos = total - totalceros;
+    
+    printf("el numero de ceros debe ser %d\n\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    
+    // Decide si la matriz es dispersa o no
+    if (totalceros==0 || totalceros <= round(total * (10/100.0))){
+        return false;
+    }
+    
+    return totalElementosDiferentesDeCero <= totalNoCerosPermitidos;
 }
+
+
+bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***matriz) {
+    int colsPorThread = ncols / numthreads;
+    int colsRestantes = ncols % numthreads;
+    int totalElementosDiferentesDeCero = 0;
+    pthread_t threads[numthreads];
+    ThreadData threadData[numthreads];
+
+    for (int i = 0; i < numthreads; i++) {
+        threadData[i].inicio = i * colsPorThread;
+        threadData[i].fin = threadData[i].inicio + colsPorThread;
+        threadData[i].numcols = nfilas;
+        threadData[i].matriz = *matriz;
+
+        if (i == numthreads - 1) {
+            threadData[i].fin += colsRestantes;
+        }
+
+        pthread_create(&threads[i], NULL, threadFuncVertical, &threadData[i]);
+    }
+
+    for (int i = 0; i < numthreads; i++) {
+        void *ret;
+        pthread_join(threads[i], &ret);
+        totalElementosDiferentesDeCero += (intptr_t)ret;
+    }
+
+    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+
+    // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
+    int total = ncols * nfilas;
+    int totalceros = round(total * (numpor/100.0)); // Asegurarse de que la división sea en punto flotante
+    int totalNoCerosPermitidos = total - totalceros;
+    
+    printf("el numero de ceros debe ser %d\n\n",totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n\n",totalNoCerosPermitidos);
+    
+    if (totalceros==0 || totalceros <= round(total * (10/100.0))){
+         return false;
+    }
+    
+    // Decide si la matriz es dispersa o no
+    return totalElementosDiferentesDeCero <= totalNoCerosPermitidos;
+}
+
+
+
 
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
@@ -153,25 +259,29 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int ***matriz)
 
 //se crea el numero de procesos 
 
-int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
-    //se inicializan las variables para recibir los datos del usr dados en la terminal
-    
+int main(int argc, char *argv[]){
+    // se inicializan las variables para recibir los datos del usr dados en la terminal
     int numfils=-1;
     int numcols=-1;
     char *archivo = NULL;
     FILE *arch;
-    int numproc=-1;
+    int numthreads=-1;
     int numpor=-1;
     int opc;
     int **matriz;
-    long num_procesadores = sysconf(_SC_NPROCESSORS_ONLN);
-    //se verifica que lo que haya pasado por consola del usr si tenga el largo esperado
-    if (argc < 10)
-    {
-        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n");
+
+    // Inicializar la librería de hilos
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+    // se verifica que lo que haya pasado por consola del usr si tenga el largo esperado
+    if (argc < 10) {
+        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n\n");
         return -1;
     }
-    //se recorre la llamada desde terminal, para identificar los selectores y almacenar las varibales donde correspondan
+
+    // se recorre la llamada desde terminal, para identificar los selectores y almacenar las varibales donde correspondan
     while ((opc = getopt(argc, argv, "f:c:a:n:p:")) != -1) {
         switch (opc) {
             case 'f':
@@ -184,56 +294,76 @@ int main(int argc, char *argv[]){ //argv[0] es el nombre del ejecutable
                 archivo = optarg;
                 break;
             case 'n':
-                numproc = atoi(optarg);
+                numthreads = atoi(optarg);
                 break;
             case 'p':
                 numpor = atoi(optarg);
                 break;
             default:
-                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nprocesos -p porcentaje\n", argv[0]);
+                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nthreads -p porcentaje\n\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
-    if (numproc%2!=0){
-        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
-        return -1;
-    }
-    //verificar que las cols y filas que me pasa el usr y las del arch sean las mismas, si es verdad, 
-    //ejecute todo el cuerpo del codigo
-    if(filasycolsdelarchivo(archivo,numfils,numcols)){
-        //se llama la funcion que reserva el espacio de memoria para la matriz
-        crearmatriz(numfils,numcols,&matriz);
-        //se llama a la funcion que almacena los elementos en memoria
-        cargarmatriz(arch,archivo,numfils,numcols,&matriz);
-        //se verifica que el procesador donde se ejecuta el programa, tenga los recursos suficientes,
-        //que numproc < #de nucleos del procesasdor
-        if (num_procesadores < 1) {
-            perror("Error al obtener el número de procesadores");
-            return 1;
-        } else if (numproc > num_procesadores){
-            printf("num procesos: %d\n",numproc);
-            printf("num cores: %ld\n",num_procesadores);
-            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
-            return -1;
-        }
-        printmat(numfils,numcols,matriz);
-        //se hace la division en grupos de la matriz
-        if (numproc%numfils==0) {
-            divisionhorizontal(numfils,numproc,&matriz);
-        } else if (numproc%numcols==0) {
-            divisionvertical(numcols,numproc,&matriz);
+
+    // verificar que las cols y filas que me pasa el usr y las del arch sean las mismas
+    if (filasycolsdelarchivo(archivo, numfils, numcols)) {
+        // se llama la funcion que reserva el espacio de memoria para la matriz
+        crearmatriz(numfils, numcols, &matriz);
+        // se llama a la funcion que almacena los elementos en memoria
+        cargarmatriz(arch, archivo, numfils, numcols, &matriz);
+        // se imprime la matriz del archivo
+        printf("La matriz en memoria se ve asi: \n\n");
+        printmat(numfils, numcols, matriz);
+        printf("\n");
+
+        // se verifica si es posible dividir las filas o columnas entre los hilos
+        if (numfils % numthreads == 0) {
+            if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
+                printf("La matriz es dispersa.\n\n"); // es sparse
+            } else {
+                printf("La matriz no es dispersa.\n\n"); // NO es sparse
+            }
+        } else if (numcols % numthreads == 0) {
+            if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
+                printf("La matriz es dispersa.\n\n"); // es sparse
+            } else {
+                printf("La matriz no es dispersa.\n\n"); // NO es sparse
+            }
         } else {
-            divisionirregular(numfils,numproc,&matriz);
+            // Si no es posible dividir exactamente, se decide basándose en la dimensión más grande
+            if (numfils > numcols) {
+                if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
+                    printf("La matriz es dispersa.\n\n"); // es sparse
+                } else {
+                    printf("La matriz no es dispersa.\n\n"); // NO es sparse
+                }
+            } else if (numcols > numfils) {
+                if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
+                    printf("La matriz es dispersa.\n\n"); // es sparse
+                } else {
+                    printf("La matriz no es dispersa.\n\n"); // NO es sparse
+                }
+            } else {
+                // Si ambas dimensiones son iguales, se puede elegir cualquier método
+                if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
+                    printf("La matriz es dispersa.\n\n"); // es sparse
+                } else {
+                    printf("La matriz no es dispersa.\n\n"); // NO es sparse
+                }
+            }
         }
-        
-        
-        
-        
     } else {
-        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
+        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n\n");
         return -1;
     }
-    //se liberan los recursos de memoria usados, empezando por la matriz
+
+    // Limpiar la librería de hilos
+    pthread_attr_destroy(&attr);
+    pthread_exit(NULL);
+
+    // se liberan los recursos de memoria usados, empezando por la matriz
     free(matriz);
-	return 0;
+    return 0;
 }
+
+
