@@ -5,6 +5,8 @@
            disponible modularmente
 *******************************************************/
 
+#include<stddef.h>
+
 #ifndef MODULO_H_INCLUDE
 #define MODULO_H_INCLUDE
 
