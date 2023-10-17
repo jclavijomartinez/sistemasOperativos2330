@@ -1,6 +1,6 @@
 /*******************************************************
 *Autor: Juan Sebastian Clavijo Martinez
-*Fecha: 10 octubre 2023
+*Fecha: 17 octubre 2023
 *Objetivo: Programa principal a ser modularizado
  Crear un programa que crea una matriz dinamica, presentada por pantalla
 *******************************************************/
