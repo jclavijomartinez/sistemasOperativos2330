@@ -248,9 +248,9 @@ void printmat(int filas, int cols, int** matrix) {
  *   - mat: Puntero a un puntero de punteros que contendrá la matriz.
  * Valor de Salida: No tiene valor de salida explícito, pero asigna memoria para la matriz.
  **********************/
-void *crearmatriz(int nfil, int ncol, int ***mat){
+void crearmatriz(int nfil, int ncol, int ***mat){
     // Se reserva espacio en memoria para las filas de la matriz
-    mat = (int)malloc(nfil * sizeof(int));
+    *mat = (int **)malloc(nfil * sizeof(int*));
     if (*mat == NULL)
     {
         // Si no se puede reservar memoria para las filas, muestra un mensaje de error y termina el programa.
@@ -283,7 +283,7 @@ void *crearmatriz(int nfil, int ncol, int ***mat){
  *   - matriz: Puntero a la matriz de enteros donde se almacenarán los datos.
  * Valor de Salida: No tiene valor de salida explícito, pero llena la matriz con los datos del archivo.
  **********************/
-void cargarmatriz(FILE arch, char *archivo, int filas, int cols, int **matriz) {
+void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int **matriz) {
     // Se intenta abrir el archivo en modo lectura
     arch = fopen(archivo, "r");
     if (arch == NULL) {
@@ -452,6 +452,10 @@ int main(int argc, char *argv[]){
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n\n");
         return -1;
+    }
+
+    for (int i = 0; i < numfils; i++) {
+    free(matriz[i]);
     }
 
     // Se liberan los recursos de memoria usados, empezando por la matriz.
