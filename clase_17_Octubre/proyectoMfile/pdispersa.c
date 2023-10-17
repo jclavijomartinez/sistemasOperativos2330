@@ -402,9 +402,9 @@ int main(int argc, char *argv[]){
         // Se carga la matriz con los datos del archivo.
         cargarmatriz(arch,archivo,numfils,numcols,matriz);
         // Se imprime la matriz.
-        printf("La matriz en memoria se ve asi: \n\n");
-        printmat(numfils,numcols,matriz);
-        printf("\n");
+        //printf("La matriz en memoria se ve asi: \n\n");
+        //printmat(numfils,numcols,matriz);
+        //printf("\n");
 
         // Se verifica que el número de procesadores sea suficiente.
         if (num_procesadores < 1) {
