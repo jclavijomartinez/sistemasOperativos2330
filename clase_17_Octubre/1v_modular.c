@@ -9,30 +9,49 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/time.h>
-int main(int argc, char *argv[]){
-size_t **matriz;
-size_t dim =5;
-srand(time(NULL));
 
-//Se reserva el espacio de memoria
-matriz = (size_t **) calloc(dim, sizeof(size_t));
+//Función reserva el espacio de memoria
+
+size_t **reservaMem(size_t N){
+size_t **entregaMM;
+entregaMM = (size_t **) calloc(dim, sizeof(size_t));
 for(size_t i = 0; i<dim; i++)
 matriz[i] = (size_t *) malloc (dim * sizeof(size_t));
+return **entregaMM;
+}
 
-//Inicialización de la matriz mediante numeros aleatorios en un rango de 1 a 100
+//Función para la inicialización de la matriz mediante numeros aleatorios en un rango de 1 a 100
+
+size_t **initMM(size_t N){
+size_t **MM;
 for(size_t i=0; i<dim;++i){
 for(size_t j=0; j<dim;++j){
-matriz[i][j] = (size_t) rand()%100 + 1;
+entregaMM[i][j] = (size_t) rand()%100 + 1;
 }
+}
+return MM;
 }
 
-//Se hace impresión de la matriz dinamica resultante
+//Función para impresión de la matriz dinamica resultante
+
+void imprimirMM(size_t **mm, size_t N){
+size_t **entregaMM;
 for(size_t i=0; i<dim;++i){
 for(size_t j=0; j<dim;++j){
 printf("%zu",matriz[i][j]);
 }
 printf("\n");
 }
+}
+
+int main(int argc, char *argv[]){
+size_t **matriz;
+size_t dim =5;
+srand(time(NULL));
+
+
+
+
 
 //Se libera la memoria reservada
 for(size_t i=0; i<dim;++i)
