@@ -1,8 +1,8 @@
 /*******************************************************
-*Autor: Juan Sebastian Clavijo Maritnez
-*Fecha: 10 octubre 2023
-*Objetivo: Programa principal a ser modularizado
- Crear un programa que crea una matriz dinamica, presentada por pantalla
+* Autor: Juan Sebastian Clavijo Maritnez
+* Fecha: 10 octubre 2023
+* Objetivo: Programa principal a ser modularizado
+* Crear un programa que crea una matriz dinamica, presentada por pantalla
 *******************************************************/
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ matriz[i][j] = (size_t) rand()%100 + 1;
 //Se hace impresión de la matriz dinamica resultante
 for(size_t i=0; i<dim;++i){
 for(size_t j=0; j<dim;++j){
-printf("%zu",matriz[i][j]);
+printf("%zu ",matriz[i][j]);
 }
 printf("\n");
 }
