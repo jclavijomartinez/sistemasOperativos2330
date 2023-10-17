@@ -315,7 +315,7 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int **matriz) 
             // Se intenta convertir el token a un entero
             if (sscanf(token, "%d", &valor) == 1) {
                 // Si la conversión es exitosa, se asigna el valor a la matriz
-                (*matriz)[i][j] = valor;
+                matriz[i][j] = valor;
             } else {
                 // Si hay un error en la conversión, se muestra un mensaje y se termina el programa
                 perror("Error al convertir token a entero");
@@ -400,7 +400,7 @@ int main(int argc, char *argv[]){
         // Se reserva espacio en memoria para la matriz.
         crearmatriz(numfils,numcols,&matriz);
         // Se carga la matriz con los datos del archivo.
-        cargarmatriz(arch,archivo,numfils,numcols,&matriz);
+        cargarmatriz(arch,archivo,numfils,numcols,matriz);
         // Se imprime la matriz.
         printf("La matriz en memoria se ve asi: \n\n");
         printmat(numfils,numcols,matriz);
