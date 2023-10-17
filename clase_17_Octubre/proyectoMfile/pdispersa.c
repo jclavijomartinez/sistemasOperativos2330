@@ -248,7 +248,7 @@ void printmat(int filas, int cols, int** matrix) {
  *   - mat: Puntero a un puntero de punteros que contendrá la matriz.
  * Valor de Salida: No tiene valor de salida explícito, pero asigna memoria para la matriz.
  **********************/
-void *crearmatriz(int nfil, int ncol, int **mat){
+void *crearmatriz(int nfil, int ncol, int ***mat){
     // Se reserva espacio en memoria para las filas de la matriz
     mat = (int)malloc(nfil * sizeof(int));
     if (*mat == NULL)
@@ -261,7 +261,7 @@ void *crearmatriz(int nfil, int ncol, int **mat){
     for (int i = 0; i < nfil; i++)
     {
         // Se reserva espacio en memoria para las columnas de cada fila
-        (mat)[i] = (int)malloc(ncol * sizeof(int));
+        (*mat)[i] = (int *)malloc(ncol * sizeof(int));
         if ((*mat)[i] == NULL) {
             // Si no se puede reservar memoria para las columnas, muestra un mensaje de error y termina el programa.
             printf("ERROR: No se ha podido reservar memoria para las columnas!\n\n");
