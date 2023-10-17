@@ -1,5 +1,5 @@
 /*******************************************************
-*Autor: J.Daniel Vargas Pedraza
+*Autor: Juan Sebastian Clavijo Maritnez
 *Fecha: 10 octubre 2023
 *Objetivo: Programa principal a ser modularizado
  Crear un programa que crea una matriz dinamica, presentada por pantalla
@@ -8,7 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/time.h>
+#include <time.h>
+
 int main(int argc, char *argv[]){
 size_t **matriz;
 size_t dim =5;
