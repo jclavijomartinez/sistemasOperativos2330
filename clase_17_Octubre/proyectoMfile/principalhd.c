@@ -71,9 +71,11 @@ int main(int argc, char *argv[]){
         // Cargar los elementos de la matriz desde el archivo a la memoria
         cargarmatriz(arch, archivo, numfils, numcols, &matriz);
         // Imprimir la matriz cargada en la memoria
-        //printf("La matriz en memoria se ve así: \n\n");
-        //printmat(numfils, numcols, matriz);
-        //printf("\n");
+        if(numfils <= 10 && numcols <= 10){
+            printf("La matriz en memoria se ve asi: \n\n");
+            printmat(numfils,numcols,matriz);
+            printf("\n");
+        }
 
         // Verificar si es posible dividir las filas o columnas entre los hilos
         if (numfils % numthreads == 0) {
