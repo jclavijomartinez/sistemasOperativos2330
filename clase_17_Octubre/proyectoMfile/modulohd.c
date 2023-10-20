@@ -8,6 +8,21 @@
 #include <sys/types.h>
 #include <stdbool.h>
 #include <math.h>
+#include <time.h>
+
+struct timespec start_time, end_time;
+
+void start_timer() {
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+}
+
+void end_timer() {
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+    double elapsed_time = (end_time.tv_sec - start_time.tv_sec) + 
+                          (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
+    printf("Tiempo de ejecución: %f segundos\n", elapsed_time);
+}
+
 
 // Definición de la estructura ThreadData utilizada para pasar datos a los hilos
 typedef struct {
@@ -107,15 +122,15 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numthreads, int
         totalElementosDiferentesDeCero += (intptr_t)ret; // Suma el resultado al contador total
     }
 
-    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+    printf("el total que escucha el proceso padre es %d\n", totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int total = nfilas * numcols; // Total de elementos en la matriz
     int totalceros = round(total * (numpor / 100.0)); // Asegura que sea una división flotante
     int totalNoCerosPermitidos = total - totalceros; // Número de elementos no cero permitidos
     
-    printf("el numero de ceros debe ser %d\n\n", totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("el numero de ceros debe ser %d\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
     
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
         return false; // Si no hay ceros o menos del 10%, la matriz no se considera dispersa
@@ -166,15 +181,15 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
         totalElementosDiferentesDeCero += (intptr_t)ret; // Suma el resultado al contador total
     }
 
-    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+    printf("el total que escucha el proceso padre es %d\n", totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int total = ncols * nfilas; // Total de elementos en la matriz
     int totalceros = round(total * (numpor / 100.0)); // Asegura que sea una división flotante
     int totalNoCerosPermitidos = total - totalceros; // Número de elementos no cero permitidos
     
-    printf("el numero de ceros debe ser %d\n\n", totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("el numero de ceros debe ser %d\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
     
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
         return false; // Si no hay ceros o menos del 10%, la matriz no se considera dispersa

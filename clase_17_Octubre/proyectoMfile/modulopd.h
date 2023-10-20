@@ -8,6 +8,8 @@
 
 /***PROTOTIPOS DE FUNCIONES***/
 
+void start_timer();
+void end_timer();
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz);
 bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz);;
 bool filasycolsdelarchivo(char *archivo, int filas, int cols);

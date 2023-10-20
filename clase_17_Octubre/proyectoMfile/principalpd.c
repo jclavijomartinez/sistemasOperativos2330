@@ -31,10 +31,13 @@ int main(int argc, char *argv[]){
     int **matriz;
     long num_procesadores = sysconf(_SC_NPROCESSORS_ONLN); // Obtiene el número de procesadores disponibles.
 
+    // Iniciar el temporizador
+    start_timer();
+
     // Se verifica que el número de argumentos pasados por consola sea el esperado.
     if (argc < 10)
     {
-        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n\n");
+        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n");
         return -1;
     }
 
@@ -57,14 +60,14 @@ int main(int argc, char *argv[]){
                 numpor = atoi(optarg); // Convierte el argumento a entero y lo asigna a numpor.
                 break;
             default:
-                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nprocesos -p porcentaje\n\n", argv[0]);
+                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nprocesos -p porcentaje\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
 
     // Se verifica que el número de procesos sea par.
     if (numproc%2!=0){
-        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n\n");
+        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
         return -1;
     }
 
@@ -76,7 +79,7 @@ int main(int argc, char *argv[]){
         cargarmatriz(arch,archivo,numfils,numcols,matriz);
         // Se imprime la matriz.
         if(numfils <= 10 && numcols <= 10){
-            printf("La matriz en memoria se ve asi: \n\n");
+            printf("La matriz en memoria se ve asi: \n");
             printmat(numfils,numcols,matriz);
             printf("\n");
         }
@@ -86,52 +89,55 @@ int main(int argc, char *argv[]){
             perror("Error al obtener el número de procesadores");
             return 1;
         } else if (numproc > num_procesadores){
-            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n\n",numproc,num_procesadores);
+            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
 
         // Se divide la matriz en grupos y se verifica si es dispersa (sparse).
         if (numfils%numproc==0) {
             if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                printf("La matriz es dispersa.\n\n");
+                printf("La matriz es dispersa.\n");
             } else {
-                printf("La matriz no es dispersa.\n\n");
+                printf("La matriz no es dispersa.\n");
             }
         } else if (numcols%numproc==0) {
             if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
-                printf("La matriz es dispersa.\n\n");
+                printf("La matriz es dispersa.\n");
             } else {
-                printf("La matriz no es dispersa.\n\n");
+                printf("La matriz no es dispersa.\n");
             }
         } else {
             if (numfils > numcols){
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }else if (numcols > numfils){
                 if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }else{
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }
         }
     } else {
-        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n\n");
+        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;
     }
 
     for (int i = 0; i < numfils; i++) {
     free(matriz[i]);
     }
+
+    // Detener el temporizador y mostrar el tiempo de ejecución
+    end_timer();
 
     // Se liberan los recursos de memoria usados, empezando por la matriz.
     free(matriz);

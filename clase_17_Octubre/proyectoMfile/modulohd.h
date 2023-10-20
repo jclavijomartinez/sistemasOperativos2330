@@ -9,6 +9,8 @@
 
 /***PROTOTIPOS DE FUNCIONES***/
 
+void start_timer();
+void end_timer();
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz);
 void *threadFuncHorizontal(void *arg);
 void *threadFuncVertical(void *arg);

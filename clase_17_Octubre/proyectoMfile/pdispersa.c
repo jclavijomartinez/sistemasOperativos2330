@@ -60,7 +60,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n", getpid(), count, inicio, fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -79,8 +79,8 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     int totalceros = round(total * (numpor / 100.0)); // Asegura que la división sea en punto flotante
     int totalNoCerosPermitidos = total - totalceros;
 
-    printf("El número de ceros debe ser %d\n\n", totalceros);
-    printf("El número de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("El número de ceros debe ser %d\n", totalceros);
+    printf("El número de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
 
     // Decide si la matriz es dispersa o no
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
@@ -132,7 +132,7 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n", getpid(), count, inicio, fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -151,8 +151,8 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
     int totalceros = round(total * (numpor / 100.0)); // Asegura que la división sea en punto flotante
     int totalNoCerosPermitidos = total - totalceros;
 
-    printf("El número de ceros debe ser %d\n\n", totalceros);
-    printf("El número de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("El número de ceros debe ser %d\n", totalceros);
+    printf("El número de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
 
     // Decide si la matriz es dispersa o no
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
@@ -206,8 +206,8 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     num_filas_arch++; // Se suma 1 para ajustar el conteo
     fclose(file); // Se cierra el archivo
 
-    printf("Número de filas en el archivo: %d\n\n", num_filas_arch);
-    printf("Número de columnas en el archivo: %d\n\n", num_columnas_arch);
+    printf("Número de filas en el archivo: %d\n", num_filas_arch);
+    printf("Número de columnas en el archivo: %d\n", num_columnas_arch);
 
     // Se verifica si las filas y columnas del archivo coinciden con las proporcionadas por el usuario
     if (filas == num_filas_arch && cols == num_columnas_arch) {
@@ -254,7 +254,7 @@ void crearmatriz(int nfil, int ncol, int ***mat){
     if (*mat == NULL)
     {
         // Si no se puede reservar memoria para las filas, muestra un mensaje de error y termina el programa.
-        printf("ERROR: No se ha podido reservar memoria para la matriz!\n\n");
+        printf("ERROR: No se ha podido reservar memoria para la matriz!\n");
         exit(1);
     }
 
@@ -264,11 +264,11 @@ void crearmatriz(int nfil, int ncol, int ***mat){
         (*mat)[i] = (int *)malloc(ncol * sizeof(int));
         if ((*mat)[i] == NULL) {
             // Si no se puede reservar memoria para las columnas, muestra un mensaje de error y termina el programa.
-            printf("ERROR: No se ha podido reservar memoria para las columnas!\n\n");
+            printf("ERROR: No se ha podido reservar memoria para las columnas!\n");
             exit(1);
         }
     }
-    printf("se ha reservado la memoria para la matriz con éxito!\n\n");
+    printf("se ha reservado la memoria para la matriz con éxito!\n");
 }
 
 
@@ -329,10 +329,10 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int **matriz) 
     }
     // Se libera la memoria de la línea
     free(linea);
-    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n\n");
+    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n");
     // Se cierra el archivo
     fclose(arch);
-    printf("El archivo se abrió y cerró exitosamente\n\n");
+    printf("El archivo se abrió y cerró exitosamente\n");
 }
 
 
@@ -361,7 +361,7 @@ int main(int argc, char *argv[]){
     // Se verifica que el número de argumentos pasados por consola sea el esperado.
     if (argc < 10)
     {
-        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n\n");
+        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n");
         return -1;
     }
 
@@ -384,14 +384,14 @@ int main(int argc, char *argv[]){
                 numpor = atoi(optarg); // Convierte el argumento a entero y lo asigna a numpor.
                 break;
             default:
-                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nprocesos -p porcentaje\n\n", argv[0]);
+                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nprocesos -p porcentaje\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
 
     // Se verifica que el número de procesos sea par.
     if (numproc%2!=0){
-        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n\n");
+        printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
         return -1;
     }
 
@@ -403,7 +403,7 @@ int main(int argc, char *argv[]){
         cargarmatriz(arch,archivo,numfils,numcols,matriz);
         // Se imprime la matriz.
         if(numfils <= 10 && numcols <= 10){
-            printf("La matriz en memoria se ve asi: \n\n");
+            printf("La matriz en memoria se ve asi: \n");
             printmat(numfils,numcols,matriz);
             printf("\n");
         }
@@ -413,46 +413,46 @@ int main(int argc, char *argv[]){
             perror("Error al obtener el número de procesadores");
             return 1;
         } else if (numproc > num_procesadores){
-            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n\n",numproc,num_procesadores);
+            printf("no es posible ejecutar el programa ya que se piden %d procesos y el computador tiene %ld nucleos, me pides mas procesos que nucleos\n",numproc,num_procesadores);
             return -1;
         }
 
         // Se divide la matriz en grupos y se verifica si es dispersa (sparse).
         if (numfils%numproc==0) {
             if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                printf("La matriz es dispersa.\n\n");
+                printf("La matriz es dispersa.\n");
             } else {
-                printf("La matriz no es dispersa.\n\n");
+                printf("La matriz no es dispersa.\n");
             }
         } else if (numcols%numproc==0) {
             if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
-                printf("La matriz es dispersa.\n\n");
+                printf("La matriz es dispersa.\n");
             } else {
-                printf("La matriz no es dispersa.\n\n");
+                printf("La matriz no es dispersa.\n");
             }
         } else {
             if (numfils > numcols){
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }else if (numcols > numfils){
                 if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }else{
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
-                    printf("La matriz es dispersa.\n\n");
+                    printf("La matriz es dispersa.\n");
                 } else {
-                    printf("La matriz no es dispersa.\n\n");
+                    printf("La matriz no es dispersa.\n");
                 }
             }
         }
     } else {
-        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n\n");
+        printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;
     }
 

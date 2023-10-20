@@ -8,7 +8,20 @@
 #include <sys/types.h>
 #include <stdbool.h>
 #include <math.h>
+#include <time.h>
 
+struct timespec start_time, end_time;
+
+void start_timer() {
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+}
+
+void end_timer() {
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+    double elapsed_time = (end_time.tv_sec - start_time.tv_sec) + 
+                          (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
+    printf("Tiempo de ejecución: %f segundos\n", elapsed_time);
+}
 
 /**********************
  * Función: divisionhorizontal
@@ -51,7 +64,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n", getpid(), count, inicio, fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -70,8 +83,8 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
     int totalceros = round(total * (numpor / 100.0)); // Asegura que la división sea en punto flotante
     int totalNoCerosPermitidos = total - totalceros;
 
-    printf("El número de ceros debe ser %d\n\n", totalceros);
-    printf("El número de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("El número de ceros debe ser %d\n", totalceros);
+    printf("El número de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
 
     // Decide si la matriz es dispersa o no
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
@@ -123,7 +136,7 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n", getpid(), count, inicio, fin);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
@@ -142,8 +155,8 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
     int totalceros = round(total * (numpor / 100.0)); // Asegura que la división sea en punto flotante
     int totalNoCerosPermitidos = total - totalceros;
 
-    printf("El número de ceros debe ser %d\n\n", totalceros);
-    printf("El número de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("El número de ceros debe ser %d\n", totalceros);
+    printf("El número de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
 
     // Decide si la matriz es dispersa o no
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
@@ -197,8 +210,8 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     num_filas_arch++; // Se suma 1 para ajustar el conteo
     fclose(file); // Se cierra el archivo
 
-    printf("Número de filas en el archivo: %d\n\n", num_filas_arch);
-    printf("Número de columnas en el archivo: %d\n\n", num_columnas_arch);
+    printf("Número de filas en el archivo: %d\n", num_filas_arch);
+    printf("Número de columnas en el archivo: %d\n", num_columnas_arch);
 
     // Se verifica si las filas y columnas del archivo coinciden con las proporcionadas por el usuario
     if (filas == num_filas_arch && cols == num_columnas_arch) {
@@ -245,7 +258,7 @@ void crearmatriz(int nfil, int ncol, int ***mat){
     if (*mat == NULL)
     {
         // Si no se puede reservar memoria para las filas, muestra un mensaje de error y termina el programa.
-        printf("ERROR: No se ha podido reservar memoria para la matriz!\n\n");
+        printf("ERROR: No se ha podido reservar memoria para la matriz!\n");
         exit(1);
     }
 
@@ -255,11 +268,11 @@ void crearmatriz(int nfil, int ncol, int ***mat){
         (*mat)[i] = (int *)malloc(ncol * sizeof(int));
         if ((*mat)[i] == NULL) {
             // Si no se puede reservar memoria para las columnas, muestra un mensaje de error y termina el programa.
-            printf("ERROR: No se ha podido reservar memoria para las columnas!\n\n");
+            printf("ERROR: No se ha podido reservar memoria para las columnas!\n");
             exit(1);
         }
     }
-    printf("se ha reservado la memoria para la matriz con éxito!\n\n");
+    printf("se ha reservado la memoria para la matriz con éxito!\n");
 }
 
 
@@ -320,8 +333,8 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int **matriz) 
     }
     // Se libera la memoria de la línea
     free(linea);
-    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n\n");
+    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n");
     // Se cierra el archivo
     fclose(arch);
-    printf("El archivo se abrió y cerró exitosamente\n\n");
+    printf("El archivo se abrió y cerró exitosamente\n");
 }

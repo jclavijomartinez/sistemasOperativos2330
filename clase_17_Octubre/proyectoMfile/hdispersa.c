@@ -116,15 +116,15 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numthreads, int
         totalElementosDiferentesDeCero += (intptr_t)ret; // Suma el resultado al contador total
     }
 
-    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+    printf("el total que escucha el proceso padre es %d\n", totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int total = nfilas * numcols; // Total de elementos en la matriz
     int totalceros = round(total * (numpor / 100.0)); // Asegura que sea una división flotante
     int totalNoCerosPermitidos = total - totalceros; // Número de elementos no cero permitidos
     
-    printf("el numero de ceros debe ser %d\n\n", totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("el numero de ceros debe ser %d\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
     
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
         return false; // Si no hay ceros o menos del 10%, la matriz no se considera dispersa
@@ -175,15 +175,15 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
         totalElementosDiferentesDeCero += (intptr_t)ret; // Suma el resultado al contador total
     }
 
-    printf("el total que escucha el proceso padre es %d\n\n", totalElementosDiferentesDeCero);
+    printf("el total que escucha el proceso padre es %d\n", totalElementosDiferentesDeCero);
 
     // Calcula el porcentaje de elementos diferentes de cero en la matriz como un entero
     int total = ncols * nfilas; // Total de elementos en la matriz
     int totalceros = round(total * (numpor / 100.0)); // Asegura que sea una división flotante
     int totalNoCerosPermitidos = total - totalceros; // Número de elementos no cero permitidos
     
-    printf("el numero de ceros debe ser %d\n\n", totalceros);
-    printf("el numero de elementos diferentes de cero debe ser %d\n\n", totalNoCerosPermitidos);
+    printf("el numero de ceros debe ser %d\n", totalceros);
+    printf("el numero de elementos diferentes de cero debe ser %d\n", totalNoCerosPermitidos);
     
     if (totalceros == 0 || totalceros <= round(total * (10 / 100.0))) {
         return false; // Si no hay ceros o menos del 10%, la matriz no se considera dispersa
@@ -379,7 +379,7 @@ int main(int argc, char *argv[]){
 
     // Verificar que los argumentos pasados por la terminal sean suficientes
     if (argc < 10) {
-        printf("No estoy seguro de que los argumentos ingresados sean correctos. REVISA\n\n");
+        printf("No estoy seguro de que los argumentos ingresados sean correctos. REVISA\n");
         return -1;
     }
 
@@ -402,7 +402,7 @@ int main(int argc, char *argv[]){
                 numpor = atoi(optarg); // Obtener el porcentaje desde la terminal
                 break;
             default:
-                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nthreads -p porcentaje\n\n", argv[0]);
+                fprintf(stderr, "Uso: %s -f filas -c columnas -a archivo.txt -n nthreads -p porcentaje\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
@@ -415,7 +415,7 @@ int main(int argc, char *argv[]){
         cargarmatriz(arch, archivo, numfils, numcols, &matriz);
         // Imprimir la matriz cargada en la memoria
         if(numfils <= 10 && numcols <= 10){
-            printf("La matriz en memoria se ve asi: \n\n");
+            printf("La matriz en memoria se ve asi: \n");
             printmat(numfils,numcols,matriz);
             printf("\n");
         }
@@ -424,42 +424,42 @@ int main(int argc, char *argv[]){
         if (numfils % numthreads == 0) {
             // Llamar a la función de división horizontal y determinar si la matriz es dispersa
             if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                printf("La matriz es dispersa.\n\n"); // Es dispersa
+                printf("La matriz es dispersa.\n"); // Es dispersa
             } else {
-                printf("La matriz no es dispersa.\n\n"); // No es dispersa
+                printf("La matriz no es dispersa.\n"); // No es dispersa
             }
         } else if (numcols % numthreads == 0) {
             // Llamar a la función de división vertical y determinar si la matriz es dispersa
             if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
-                printf("La matriz es dispersa.\n\n"); // Es dispersa
+                printf("La matriz es dispersa.\n"); // Es dispersa
             } else {
-                printf("La matriz no es dispersa.\n\n"); // No es dispersa
+                printf("La matriz no es dispersa.\n"); // No es dispersa
             }
         } else {
             // Si no es posible dividir exactamente, decidir basándose en la dimensión más grande
             if (numfils > numcols) {
                 if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                    printf("La matriz es dispersa.\n\n"); // Es dispersa
+                    printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    printf("La matriz no es dispersa.\n\n"); // No es dispersa
+                    printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             } else if (numcols > numfils) {
                 if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
-                    printf("La matriz es dispersa.\n\n"); // Es dispersa
+                    printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    printf("La matriz no es dispersa.\n\n"); // No es dispersa
+                    printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             } else {
                 // Si ambas dimensiones son iguales, se puede elegir cualquier método
                 if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                    printf("La matriz es dispersa.\n\n"); // Es dispersa
+                    printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    printf("La matriz no es dispersa.\n\n"); // No es dispersa
+                    printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             }
         }
     } else {
-        printf("¿Estás seguro de que ingresaste el número de columnas y filas correctamente?\n\n");
+        printf("¿Estás seguro de que ingresaste el número de columnas y filas correctamente?\n");
         return -1;
     }
 
