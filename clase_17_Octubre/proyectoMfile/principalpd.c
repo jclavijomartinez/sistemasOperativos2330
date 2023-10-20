@@ -142,4 +142,4 @@ int main(int argc, char *argv[]){
     // Se liberan los recursos de memoria usados, empezando por la matriz.
     free(matriz);
     return 0;
-}
+} //EOF
