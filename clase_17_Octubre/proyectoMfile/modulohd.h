@@ -1,3 +1,4 @@
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -9,7 +10,6 @@
 /***PROTOTIPOS DE FUNCIONES***/
 
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz);
-
 void *threadFuncHorizontal(void *arg);
 void *threadFuncVertical(void *arg);
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numthreads, int ***matriz);
