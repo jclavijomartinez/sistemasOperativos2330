@@ -127,9 +127,9 @@ int main(int argc, char *argv[]){
 
     // Limpiar la librería de hilos
     pthread_attr_destroy(&attr);
-    pthread_exit(NULL);
     // Detener el temporizador y mostrar el tiempo de ejecución
     end_timer();
+    pthread_exit(NULL);
     
     // Liberar los recursos de memoria utilizados, empezando por la matriz
     free(matriz);
