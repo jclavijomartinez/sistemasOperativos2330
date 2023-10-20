@@ -1,4 +1,6 @@
-#include<stddef.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stddef.h>
 
 #ifndef MODULOPD_H_INCLUDE
 
