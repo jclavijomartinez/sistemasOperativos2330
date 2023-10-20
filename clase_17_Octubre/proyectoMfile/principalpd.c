@@ -9,6 +9,7 @@
  * Valor de Salida: 0 si el programa se ejecuta correctamente, -1 en caso de error.
  **********************/ 
 
+#include "modulopd.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
