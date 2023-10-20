@@ -9,13 +9,15 @@
  * Valor de Salida: 0 si el programa se ejecuta correctamente, -1 en caso de error.
  ****************************************************************/ 
 
+#include "modulohd.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 #include <stdbool.h>
 #include <math.h>
-#include <pthread.h>
 
 
 int main(int argc, char *argv[]){

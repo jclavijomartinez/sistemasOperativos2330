@@ -16,4 +16,3 @@ void crearmatriz(int nfil, int ncol, int ***mat);
 void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int **matriz);
 
 #endif
-
