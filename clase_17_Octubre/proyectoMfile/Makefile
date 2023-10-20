@@ -1,26 +1,18 @@
+# Compiler and flags
 GCC = gcc
 FLAGS = -Wall
 CFLAGS = -lm
 
-# Lista de ejecutables que deseas crear
-PROGS = principalpd principalhd
+# Targets
+all: principalhd principalpd
 
-# Lista de archivos fuente
-SRCS = principalhd.c principalpd.c modulohd.c modulopd.c
+principalhd: principalhd.c modulohd.c
+	$(GCC) $(FLAGS) principalhd.c modulohd.c -o principalhd $(CFLAGS)
 
-# Generar los nombres de los objetos a partir de los nombres de los archivos fuente
-OBJS = $(SRCS:.c=.o)
-
-all: $(PROGS)
-
-principalpd: principalpd.o modulohd.o modulopd.o
-	$(GCC) $(FLAGS) -o $@ $^ $(CFLAGS)
-
-principalhd: principalhd.o modulohd.o modulopd.o
-	$(GCC) $(FLAGS) -o $@ $^ $(CFLAGS)
-
-%.o: %.c
-	$(GCC) $(FLAGS) -c $< -o $@ $(CFLAGS)
+principalpd: principalpd.c modulopd.c
+	$(GCC) $(FLAGS) principalpd.c modulopd.c -o principalpd $(CFLAGS)
 
 clean:
-	$(RM) $(PROGS) $(OBJS)
+	rm -f principalhd principalpd
+
+.PHONY: all clean

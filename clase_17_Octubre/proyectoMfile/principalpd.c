@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     int numfils=-1;
     int numcols=-1;
     char *archivo = NULL;
-    FILE *arch;
+    FILE *arch = NULL;
     int numproc=-1;
     int numpor=-1;
     int opc;

@@ -300,6 +300,7 @@ void **crearmatriz(int nfil, int ncol, int*** mat) {
     }
 
     printf("Se ha reservado la memoria para la matriz con éxito!\n");
+    return NULL;
 }
 
 
