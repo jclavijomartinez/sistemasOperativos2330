@@ -26,7 +26,7 @@ En esencia, estos programas deben analizar una matriz, cuyas dimensiones y datos
 
 ### Requisitos Previos
 
-Antes de ejecutar revisar el siguiente checlist:
+Antes de ejecutar revisar el siguiente checklist:
 
 - [ ] Estar dentro de una terminal de linux, en cualquiera de sus distros (preferiblemente ubuntu), que tenga el kernel 6.2.0-35-generic o posterior
 - [ ] Verificar que tenga la herramienta UnZip, preferiblemente version 6.00 o posterior, en caso de no tenerla usar el comando sudo apt install unzip -y o el equivalente en la distro que use el lector de linux
