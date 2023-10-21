@@ -3,7 +3,7 @@
 ## Autores
 
 - [JUAN SEBASTIÁN CLAVIJO MARTÍNEZ](https://github.com/jclavijomartinez/sistemasOperativos2330/tree/produccion/clase_17_Octubre/proyectoMfile)
-- [SANTIAGO MESA MIÑO](santiagoa.mesan@javeriana.edu.co)
+- [SANTIAGO MESA NIÑO](santiagoa.mesan@javeriana.edu.co)
 - [JULIANA LUGO MARTÍNEZ](julugo@javeriana.edu.co)
 
 ## Descripción
