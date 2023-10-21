@@ -38,3 +38,6 @@ Antes de ejecutar revisar el siguiente checlist:
 ## Cómo Usar
 
 1. Una vez dentro de la carpeta donde se descomprimió el .zip, ejecute el comando make
+2. Para ejecutar el codigo con procesos use la instruccion ./principalpd -f 80 -c 80 -a ejemplo280X80.txt -n 2 (RECUERDE QUE EL NUMERO DE PROCESOS DEBE SER PAR Y MENOR QUE EL NUMERO DE NUCLEOS DEL PROCESADOR DEL COMPUTADOR EN DONDE SE EJECUTE EL CÓDIGO) -p 90
+3. Para ejecutar el codigo con hilos use la instruccion ./principalhd -f 80 -c 80 -a ejemplo280X80.txt -n 15 -p 90
+4. Si quiere limpiar los ejecutables use el comando make clean
