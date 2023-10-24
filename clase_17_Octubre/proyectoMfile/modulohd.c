@@ -1,3 +1,13 @@
+/**********************
+ * Fecha: 24-10-2023
+ * Autores: 
+ *  - Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co), 
+ *  - Santiago Mesa Niño (santiagoa.mesan@javeriana.edu.co), 
+ *  - Juliana Lugo Martínez (julugo@javeriana.edu.co)
+ * Tema: proyecto 1
+ * Objetivo: archivo de modulo, contiene todo el cuerpo de las funciones
+ *********************/
+
 //includes respectivos
 #include "modulohd.h"
 #include <string.h>

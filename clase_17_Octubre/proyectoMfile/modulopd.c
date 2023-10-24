@@ -1,3 +1,14 @@
+/**********************
+ * Fecha: 24-10-2023
+ * Autores: 
+ *  - Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co), 
+ *  - Santiago Mesa Niño (santiagoa.mesan@javeriana.edu.co), 
+ *  - Juliana Lugo Martínez (julugo@javeriana.edu.co)
+ * Tema: proyecto 1
+ * Objetivo: archivo módulo contiene todos los cuerpos de funciones de pdispersa
+ *********************/
+
+
 //includes respectivos
 #include "modulopd.h"
 #include <string.h>

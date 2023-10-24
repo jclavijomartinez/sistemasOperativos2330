@@ -1,4 +1,27 @@
 /**********************
+ * Fecha: 24-10-2023
+ * Autores: 
+ *  - Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co), 
+ *  - Santiago Mesa Niño (santiagoa.mesan@javeriana.edu.co), 
+ *  - Juliana Lugo Martínez (julugo@javeriana.edu.co)
+ * Tema: proyecto 1
+ * Objetivo: archivo principal, que contiene la funcion main 
+ *********************/
+
+
+//includes respectivos
+#include "modulopd.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <stdbool.h>
+
+#include <math.h>
+
+/**********************
  * Función: main
  * Descripción: Esta función es la entrada principal del programa. Realiza la gestión de argumentos,
  *              reserva memoria para la matriz, carga la matriz desde un archivo, verifica si es dispersa
@@ -8,16 +31,6 @@
  *   - argv: Arreglo de argumentos en la línea de comandos.
  * Valor de Salida: 0 si el programa se ejecuta correctamente, -1 en caso de error.
  **********************/ 
-
-#include "modulopd.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <stdbool.h>
-#include <math.h>
 
 int main(int argc, char *argv[]){
     // Se inicializan las variables para recibir los datos del usuario dados en la terminal.

@@ -1,13 +1,12 @@
-/****************************************************************
- * Función: main
- * Descripción: Esta función es la entrada principal del programa. Realiza la gestión de argumentos,
- *              reserva memoria para la matriz, carga la matriz desde un archivo, verifica si es dispersa
- *              y realiza la liberación de recursos al final.
- * Parámetros de Entrada:
- *   - argc: Cantidad de argumentos en la línea de comandos.
- *   - argv: Arreglo de argumentos en la línea de comandos.
- * Valor de Salida: 0 si el programa se ejecuta correctamente, -1 en caso de error.
- ****************************************************************/ 
+/**********************
+ * Fecha: 24-10-2023
+ * Autores: 
+ *  - Juan Sebastian Clavijo Martinez (jsebastian.clavijoc@javeriana.edu.co), 
+ *  - Santiago Mesa Niño (santiagoa.mesan@javeriana.edu.co), 
+ *  - Juliana Lugo Martínez (julugo@javeriana.edu.co)
+ * Tema: proyecto 1
+ * Objetivo: archivo principal de hdispersa, contiene la funcion main 
+ *********************/
 
 #include "modulohd.h"
 #include <string.h>
@@ -19,6 +18,18 @@
 #include <stdbool.h>
 #include <math.h>
 #include <time.h>
+
+
+/****************************************************************
+ * Función: main
+ * Descripción: Esta función es la entrada principal del programa. Realiza la gestión de argumentos,
+ *              reserva memoria para la matriz, carga la matriz desde un archivo, verifica si es dispersa
+ *              y realiza la liberación de recursos al final.
+ * Parámetros de Entrada:
+ *   - argc: Cantidad de argumentos en la línea de comandos.
+ *   - argv: Arreglo de argumentos en la línea de comandos.
+ * Valor de Salida: 0 si el programa se ejecuta correctamente, -1 en caso de error.
+ ****************************************************************/ 
 
 
 int main(int argc, char *argv[]){
