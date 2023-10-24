@@ -50,7 +50,10 @@ int main(int argc, char *argv[]){
     // Se verifica que el número de argumentos pasados por consola sea el esperado.
     if (argc < 10)
     {
-        printf("no estoy seguro que lo que hayas ingresado sea correcto, REVISA\n");
+        printf("Los argumentos ingresados no son correctos\n");
+        printf("Debes ingresar los siguientes argumentos:\n");
+        printf("Nombre del programa -f #filas -c #columnas -a Nombre del archivo.txt -n #de procesadores -p #de porcentaje de dispersion\n\n");
+        printf("Un ejemplo seria: ./principalpd -f 80 -c 80 -a ejemplo280X80.txt -n 2 -p 90\n");
         return -1;
     }
 

@@ -52,7 +52,10 @@ int main(int argc, char *argv[]){
 
     // Verificar que los argumentos pasados por la terminal sean suficientes
     if (argc < 10) {
-        printf("No estoy seguro de que los argumentos ingresados sean correctos. REVISA\n");
+        printf("Los argumentos ingresados no son correctos\n");
+        printf("Debes ingresar los siguientes argumentos:\n");
+        printf("Nombre del programa -f #filas -c #columnas -a Nombre del archivo.txt -n #de hilos -p #de porcentaje de dispersion\n\n");
+        printf("Un ejemplo seria: ./principalhd -f 80 -c 80 -a ejemplo280X80.txt -n 15 -p 90\n");
         return -1;
     }
 
