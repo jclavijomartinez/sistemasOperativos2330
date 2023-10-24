@@ -37,13 +37,28 @@ Antes de ejecutar revisar el siguiente checlist:
 
 ## Cómo Usar
 
-1. Una vez dentro de la carpeta donde se descomprimió el .zip, ejecute el comando make
+1. Una vez dentro de la carpeta donde se descomprimió el .zip, ejecute el comando:
+
+`$ make`
+
 ![descomprimido](https://github.com/jclavijomartinez/sistemasOperativos2330/blob/produccion/clase_17_Octubre/proyectoMfile/img/Screenshot_1.png)
+
 ![ejecucion make](https://github.com/jclavijomartinez/sistemasOperativos2330/blob/produccion/clase_17_Octubre/proyectoMfile/img/Screenshot_2.png)
-1. Para ejecutar el codigo con procesos use la instruccion ./principalpd -f 80 -c 80 -a ejemplo280X80.txt -n 2 (RECUERDE QUE EL NUMERO DE PROCESOS DEBE SER PAR Y MENOR QUE EL NUMERO DE NUCLEOS DEL PROCESADOR
-DEL COMPUTADOR EN DONDE SE EJECUTE EL CÓDIGO) -p 90
+
+2. Para ejecutar el codigo con procesos use la instruccion:
+`$ ./principalpd -f 80 -c 80 -a ejemplo280X80.txt -n 2 -p 90`
+(RECUERDE QUE EL NUMERO DE PROCESOS DEBE SER PAR Y MENOR QUE EL NUMERO DE NUCLEOS DEL PROCESADOR
+DEL COMPUTADOR EN DONDE SE EJECUTE EL CÓDIGO) 
+
+Puedes cambiar diferentes parámetros dependiendo de la matriz que desees evaluar como `-f ## y -c ##`, por el numero de filas y columnas del archivo que desea evaluar, `nombreDeTuArchivo.txt` por el nombre del archivo que desees evaluar, `-n #` por el numero de procesadores que deseas uasar, y `-p ##` por el porcentaje que desees evaluar si la matriz es dispersa o no.
+
 ![ejecucion procesos](https://github.com/jclavijomartinez/sistemasOperativos2330/blob/produccion/clase_17_Octubre/proyectoMfile/img/Screenshot_3.png)
-1. Para ejecutar el codigo con hilos use la instruccion ./principalhd -f 80 -c 80 -a ejemplo280X80.txt -n 15 -p 90
+
+3. Para ejecutar el codigo con hilos use la instruccion: `./principalhd -f 80 -c 80 -a ejemplo280X80.txt -n 15 -p 90`
+
+Puedes cambiar diferentes parámetros dependiendo de la matriz que desees evaluar como `-f ## y -c ##`, por el numero de filas y columnas del archivo que desea evaluar, `nombreDeTuArchivo.txt` por el nombre del archivo que desees evaluar, `-n #` por el numero de hilos que deseas uasar, y `-p ##` por el porcentaje que desees evaluar si la matriz es dispersa o no.
+
 ![ejecucion hilos](https://github.com/jclavijomartinez/sistemasOperativos2330/blob/produccion/clase_17_Octubre/proyectoMfile/img/Screenshot_4.png)
-1. Si quiere limpiar los ejecutables use el comando make clean
+
+4. Si quiere limpiar los ejecutables use el comando make clean
 ![make clean](https://github.com/jclavijomartinez/sistemasOperativos2330/blob/produccion/clase_17_Octubre/proyectoMfile/img/Screenshot_5.png)
