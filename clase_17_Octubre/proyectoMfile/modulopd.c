@@ -199,35 +199,36 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
 
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
-    int valor;
+    int elementos_primera_linea = 0;
+    char linea[5120];
 
-    for (int i = 0; i < filas; i++) {
-        int columnas_en_linea_actual = 0;
-        while (fscanf(file, "%d", &valor) == 1) {
-            columnas_en_linea_actual++;
-            if (columnas_en_linea_actual > cols) {
-                // Si encontramos más columnas de las esperadas, cerramos el archivo y regresamos false
-                fclose(file);
-                return false;
-            }
+    // Se lee la primera línea del archivo para obtener el número de columnas
+    if (fgets(linea, sizeof(linea), file) != NULL) {
+        char *token = strtok(linea, " "); // Separa por espacios o tabulaciones
+        while (token != NULL) {
+            elementos_primera_linea++;
+            token = strtok(NULL, " ");
         }
-        if (i == 0) {
-            num_columnas_arch = columnas_en_linea_actual; // Establecemos el número de columnas basado en la primera línea
-        } else if (columnas_en_linea_actual != num_columnas_arch) {
-            // Si cualquier línea subsiguiente tiene un número diferente de columnas, cerramos el archivo y regresamos false
-            fclose(file);
-            return false;
-        }
+        elementos_primera_linea -= 1; // Se resta 1 para ajustar el conteo
+        num_columnas_arch = elementos_primera_linea;
+    }
+
+    // Se cuenta el número de filas en el archivo
+    while (fgets(linea, sizeof(linea), file)) {
         num_filas_arch++;
     }
 
-    fclose(file); // Cierra el archivo después de leerlo
+    num_filas_arch++; // Se suma 1 para ajustar el conteo
+    fclose(file); // Se cierra el archivo
 
-    // Compara el número de filas y columnas del archivo con los proporcionados por el usuario
+    printf("Número de filas en el archivo: %d\n", num_filas_arch);
+    printf("Número de columnas en el archivo: %d\n", num_columnas_arch);
+
+    // Se verifica si las filas y columnas del archivo coinciden con las proporcionadas por el usuario
     if (filas == num_filas_arch && cols == num_columnas_arch) {
-        return true; // Retorna verdadero si coinciden
+        return true; // Si coinciden, devuelve true
     } else {
-        return false; // Retorna falso si no coinciden
+        return false; // Si no coinciden, devuelve false
     }
 }
 
