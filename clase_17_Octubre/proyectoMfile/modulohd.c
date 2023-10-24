@@ -230,7 +230,7 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
     int elementos_primera_linea = 0;
-    char linea[5120]; // Almacena cada línea leída del archivo
+    char linea[51200]; // Almacena cada línea leída del archivo
 
     // Lee la primera línea del archivo para determinar el número de columnas
     if (fgets(linea, sizeof(linea), file) != NULL) {

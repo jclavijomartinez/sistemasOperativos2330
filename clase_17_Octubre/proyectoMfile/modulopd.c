@@ -187,6 +187,7 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
  *   - cols: Número de columnas esperado de la matriz.
  * Valor de Salida: true si las dimensiones coinciden, false en caso contrario o si hay un error en la lectura del archivo.
  **********************/
+
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     // Se intenta abrir el archivo en modo lectura
     FILE *file = fopen(archivo, "r");
@@ -200,7 +201,7 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
     int elementos_primera_linea = 0;
-    char linea[5120];
+    char linea[51200];
 
     // Se lee la primera línea del archivo para obtener el número de columnas
     if (fgets(linea, sizeof(linea), file) != NULL) {
