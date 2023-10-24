@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
     long num_procesadores = sysconf(_SC_NPROCESSORS_ONLN); // Obtiene el número de procesadores disponibles.
 
     // Iniciar el temporizador
-    start_timer();
+    //start_timer();
 
     // Se verifica que el número de argumentos pasados por consola sea el esperado.
     if (argc < 10)
@@ -109,6 +109,7 @@ int main(int argc, char *argv[]){
             return -1;
         }
 
+        start_timer();
         // Se divide la matriz en grupos y se verifica si es dispersa (sparse).
         if (numfils%numproc==0) {
             if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
@@ -143,6 +144,8 @@ int main(int argc, char *argv[]){
                 }
             }
         }
+        // Detener el temporizador y mostrar el tiempo de ejecución
+        end_timer();
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;
@@ -153,7 +156,7 @@ int main(int argc, char *argv[]){
     }
 
     // Detener el temporizador y mostrar el tiempo de ejecución
-    end_timer();
+    //end_timer();
 
     // Se liberan los recursos de memoria usados, empezando por la matriz.
     free(matriz);

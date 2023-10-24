@@ -34,7 +34,7 @@
 
 int main(int argc, char *argv[]){
     // Iniciar el temporizador
-    start_timer();
+    //start_timer();
     // Inicializar las variables para recibir los datos del usuario dados en la terminal
     int numfils=-1;
     int numcols=-1;
@@ -96,6 +96,7 @@ int main(int argc, char *argv[]){
             printf("\n");
         }
 
+        start_timer();
         // Verificar si es posible dividir las filas o columnas entre los hilos
         if (numfils % numthreads == 0) {
             // Llamar a la función de división horizontal y determinar si la matriz es dispersa
@@ -134,6 +135,7 @@ int main(int argc, char *argv[]){
                 }
             }
         }
+        end_timer();
     } else {
         printf("¿Estás seguro de que ingresaste el número de columnas y filas correctamente?\n");
         return -1;
@@ -142,7 +144,7 @@ int main(int argc, char *argv[]){
     // Limpiar la librería de hilos
     pthread_attr_destroy(&attr);
     // Detener el temporizador y mostrar el tiempo de ejecución
-    end_timer();
+    //end_timer();
     pthread_exit(NULL);
     
     // Liberar los recursos de memoria utilizados, empezando por la matriz
