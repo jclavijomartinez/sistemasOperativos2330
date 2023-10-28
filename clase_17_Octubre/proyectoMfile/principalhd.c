@@ -84,7 +84,9 @@ int main(int argc, char *argv[]){
     }
 
     // Verificar que las filas y columnas especificadas coincidan con las del archivo
+    printf("Antes de verificar filas y columnas del archivo.\n");
     if (filasycolsdelarchivo(archivo, numfils, numcols)) {
+        printf("Las filas y columnas del archivo son correctas.\n");
         // Reservar espacio de memoria para la matriz
         crearmatriz(numfils, numcols, &matriz);
         // Cargar los elementos de la matriz desde el archivo a la memoria
@@ -137,6 +139,7 @@ int main(int argc, char *argv[]){
         }
         end_timer();
     } else {
+        printf("Las filas y columnas del archivo NO son correctas.\n");
         printf("¿Estás seguro de que ingresaste el número de columnas y filas correctamente?\n");
         return -1;
     }
