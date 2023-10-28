@@ -48,11 +48,10 @@ void end_timer() {
  * Valor de Salida: true si la matriz es dispersa, false si no lo es.
  **********************/
 bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, int ***matriz) {
-    int filasPorProceso = nfilas / numprocesos; // Número de filas por proceso
-    int filasRestantes = nfilas % numprocesos; // Filas restantes para el último proceso
+    int filasPorProceso = nfilas / numprocesos; // Número de filas base por proceso
+    int filasRestantes = nfilas % numprocesos;  // Filas restantes
     int totalElementosDiferentesDeCero = 0; // Contador de elementos diferentes de cero
 
-    // Ciclo que crea procesos hijos para procesar filas de la matriz
     for (int i = 0; i < numprocesos; i++) {
         pid_t pid = fork();
 
@@ -60,9 +59,9 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
             int inicio = i * filasPorProceso; // Fila de inicio para este proceso
             int fin = inicio + filasPorProceso; // Fila de fin para este proceso
 
-            // Se añaden las filas restantes al último proceso
-            if (i == numprocesos - 1) {
-                fin += filasRestantes;
+            // Distribuir las filas restantes entre los primeros 'filasRestantes' procesos
+            if (i < filasRestantes) {
+                fin++;
             }
 
             int count = 0; // Contador de elementos diferentes de cero
@@ -75,7 +74,7 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las filas %d y %d\n", getpid(), count, inicio, fin - 1);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
