@@ -82,10 +82,10 @@ int main(int argc, char *argv[]){
     }
 
     // Se verifica que el número de procesos sea par.
-    if (numproc%2!=0){
+    /*if (numproc%2!=0){
         printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
         return -1;
-    }
+    }*/
 
     // Se verifica que las filas y columnas proporcionadas por el usuario coincidan con las del archivo.
     if(filasycolsdelarchivo(archivo,numfils,numcols)){
@@ -113,39 +113,48 @@ int main(int argc, char *argv[]){
         // Se divide la matriz en grupos y se verifica si es dispersa (sparse).
         if (numfils%numproc==0) {
             if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
+                end_timer();
                 printf("La matriz es dispersa.\n");
             } else {
+                end_timer();
                 printf("La matriz no es dispersa.\n");
             }
         } else if (numcols%numproc==0) {
             if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
+                end_timer();
                 printf("La matriz es dispersa.\n");
             } else {
+                end_timer();
                 printf("La matriz no es dispersa.\n");
             }
         } else {
             if (numfils > numcols){
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
+                    end_timer();
                     printf("La matriz es dispersa.\n");
                 } else {
+                    end_timer();
                     printf("La matriz no es dispersa.\n");
                 }
             }else if (numcols > numfils){
                 if (divisionvertical(numpor, numfils, numcols, numproc, &matriz)){
+                    end_timer();
                     printf("La matriz es dispersa.\n");
                 } else {
+                    end_timer();
                     printf("La matriz no es dispersa.\n");
                 }
             }else{
                 if (divisionhorizontal(numpor, numfils, numcols, numproc, &matriz)){
+                    end_timer();
                     printf("La matriz es dispersa.\n");
                 } else {
+                    end_timer();
                     printf("La matriz no es dispersa.\n");
                 }
             }
         }
         // Detener el temporizador y mostrar el tiempo de ejecución
-        end_timer();
     } else {
         printf("estas seguro de que pusiste el numero de columnas y filas correcto?\n");
         return -1;
