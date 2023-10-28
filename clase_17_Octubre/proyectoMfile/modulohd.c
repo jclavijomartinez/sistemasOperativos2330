@@ -220,46 +220,48 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
  * Valor de Salida: true si las dimensiones coinciden, false en caso contrario o si hay un error en la lectura del archivo.
  ****************************************************************/
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
-    // Se intenta abrir el archivo en modo lectura
     FILE *file = fopen(archivo, "r");
-
     if (file == NULL) {
-        // Si hay un error al abrir el archivo, muestra un mensaje de error y devuelve false
         perror("Error al abrir el archivo");
         return false;
     }
 
-    int num_filas_arch = 0;
+    char *linea = NULL;
+    size_t longitud = 0;
+    ssize_t leidos;
     int num_columnas_arch = 0;
-    int valor;
 
     for (int i = 0; i < filas; i++) {
-        int columnas_en_linea_actual = 0;
-        while (fscanf(file, "%d", &valor) == 1) {
-            columnas_en_linea_actual++;
-            if (columnas_en_linea_actual > cols) {
-                // Si encontramos más columnas de las esperadas, cerramos el archivo y regresamos false
-                fclose(file);
-                return false;
-            }
-        }
-        if (i == 0) {
-            num_columnas_arch = columnas_en_linea_actual; // Establecemos el número de columnas basado en la primera línea
-        } else if (columnas_en_linea_actual != num_columnas_arch) {
-            // Si cualquier línea subsiguiente tiene un número diferente de columnas, cerramos el archivo y regresamos false
+        leidos = getline(&linea, &longitud, file);
+        if (leidos == -1) {
+            free(linea);
             fclose(file);
             return false;
         }
-        num_filas_arch++;
+
+        char *token = strtok(linea, " ");
+        int columnas_en_linea_actual = 0;
+        while (token != NULL) {
+            columnas_en_linea_actual++;
+            token = strtok(NULL, " ");
+        }
+
+        if (i == 0) {
+            num_columnas_arch = columnas_en_linea_actual;
+        } else if (columnas_en_linea_actual != num_columnas_arch) {
+            free(linea);
+            fclose(file);
+            return false;
+        }
     }
 
-    fclose(file); // Cierra el archivo después de leerlo
+    free(linea);
+    fclose(file);
 
-    // Compara el número de filas y columnas del archivo con los proporcionados por el usuario
-    if (filas == num_filas_arch && cols == num_columnas_arch) {
-        return true; // Retorna verdadero si coinciden
+    if (cols == num_columnas_arch) {
+        return true;
     } else {
-        return false; // Retorna falso si no coinciden
+        return false;
     }
 }
 
