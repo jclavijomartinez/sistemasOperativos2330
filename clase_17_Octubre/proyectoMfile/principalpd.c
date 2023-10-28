@@ -81,13 +81,7 @@ int main(int argc, char *argv[]){
         }
     }
 
-    printf("numfils: %d\n", numfils);
-    printf("numcols: %d\n", numcols);
-    printf("archivo: %s\n", archivo);
-    printf("numproc: %d\n", numproc);
-    printf("numpor: %d\n", numpor);
-
-
+    
     // Se verifica que el número de procesos sea par.
     /*if (numproc%2!=0){
         printf("recuerda que necesito que el numero de procesos sea PAR revisa!\n");
