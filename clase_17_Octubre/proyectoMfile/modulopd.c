@@ -203,6 +203,7 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
         int columnas_en_linea_actual = 0;
         while (fscanf(file, "%d", &valor) == 1) {
             columnas_en_linea_actual++;
+            printf("Fila %d, Columna %d: Valor %d\n", i, columnas_en_linea_actual, valor);//
             if (columnas_en_linea_actual > cols) {
                 // Si encontramos más columnas de las esperadas, cerramos el archivo y regresamos false
                 fclose(file);
