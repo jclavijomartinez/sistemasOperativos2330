@@ -119,11 +119,10 @@ bool divisionhorizontal(int numpor, int nfilas, int numcols, int numprocesos, in
  * Valor de Salida: true si la matriz es dispersa, false si no lo es.
  **********************/
 bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int ***matriz) {
-    int colsPorProceso = ncols / numprocesos; // Número de columnas por proceso
-    int colsRestantes = ncols % numprocesos; // Columnas restantes para el último proceso
+    int colsPorProceso = ncols / numprocesos; // Número de columnas base por proceso
+    int colsRestantes = ncols % numprocesos;  // Columnas restantes
     int totalElementosDiferentesDeCero = 0; // Contador de elementos diferentes de cero
 
-    // Ciclo que crea procesos hijos para procesar columnas de la matriz
     for (int i = 0; i < numprocesos; i++) {
         pid_t pid = fork();
 
@@ -131,9 +130,9 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
             int inicio = i * colsPorProceso; // Columna de inicio para este proceso
             int fin = inicio + colsPorProceso; // Columna de fin para este proceso
 
-            // Se añaden las columnas restantes al último proceso
-            if (i == numprocesos - 1) {
-                fin += colsRestantes;
+            // Distribuir las columnas restantes entre los primeros 'colsRestantes' procesos
+            if (i < colsRestantes) {
+                fin++;
             }
 
             int count = 0; // Contador de elementos diferentes de cero
@@ -146,7 +145,7 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numprocesos, int **
             }
 
             // Se muestra el resultado de este proceso
-            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n", getpid(), count, inicio, fin);
+            printf("El proceso hijo con ID: %d encontró %d elementos distintos de cero entre las columnas %d y %d\n", getpid(), count, inicio, fin - 1);
             exit(count); // El proceso hijo termina y devuelve el conteo
         }
     }
