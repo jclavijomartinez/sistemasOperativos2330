@@ -83,8 +83,8 @@ int main(int argc, char *argv[]){
         }
     }
 
-    printf("Antes de verificar filas y columnas del archivo.\n");
     // Verificar que las filas y columnas especificadas coincidan con las del archivo
+    printf("Antes de verificar filas y columnas del archivo.\n");
     if (filasycolsdelarchivo(archivo, numfils, numcols)) {
         printf("Las filas y columnas del archivo son correctas.\n");
         // Reservar espacio de memoria para la matriz
@@ -103,50 +103,41 @@ int main(int argc, char *argv[]){
         if (numfils % numthreads == 0) {
             // Llamar a la función de división horizontal y determinar si la matriz es dispersa
             if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                end_timer();
                 printf("La matriz es dispersa.\n"); // Es dispersa
             } else {
-                end_timer();
                 printf("La matriz no es dispersa.\n"); // No es dispersa
             }
         } else if (numcols % numthreads == 0) {
             // Llamar a la función de división vertical y determinar si la matriz es dispersa
             if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
-                end_timer();
                 printf("La matriz es dispersa.\n"); // Es dispersa
             } else {
-                end_timer();
                 printf("La matriz no es dispersa.\n"); // No es dispersa
             }
         } else {
             // Si no es posible dividir exactamente, decidir basándose en la dimensión más grande
             if (numfils > numcols) {
                 if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                    end_timer();
                     printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    end_timer();
                     printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             } else if (numcols > numfils) {
                 if (divisionvertical(numpor, numfils, numcols, numthreads, &matriz)) {
-                    end_timer();
                     printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    end_timer();
                     printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             } else {
                 // Si ambas dimensiones son iguales, se puede elegir cualquier método
                 if (divisionhorizontal(numpor, numfils, numcols, numthreads, &matriz)) {
-                    end_timer();
                     printf("La matriz es dispersa.\n"); // Es dispersa
                 } else {
-                    end_timer();
                     printf("La matriz no es dispersa.\n"); // No es dispersa
                 }
             }
         }
+        end_timer();
     } else {
         printf("Las filas y columnas del archivo NO son correctas.\n");
         printf("¿Estás seguro de que ingresaste el número de columnas y filas correctamente?\n");

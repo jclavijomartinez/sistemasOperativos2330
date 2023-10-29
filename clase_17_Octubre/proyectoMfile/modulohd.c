@@ -220,64 +220,46 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
  * Valor de Salida: true si las dimensiones coinciden, false en caso contrario o si hay un error en la lectura del archivo.
  ****************************************************************/
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
-    FILE *file = fopen(archivo, "r");
+    FILE *file = fopen(archivo, "r"); // Abre el archivo en modo lectura
 
     if (file == NULL) {
-        perror("Error al abrir el archivo");
-        printf("No se pudo abrir el archivo %s\n", archivo);
-        return false;
-    } else {
-        printf("Archivo %s abierto con éxito\n", archivo);
-    }
-
-    // Imprimir las primeras líneas del archivo
-    printf("Las primeras líneas del archivo son:\n");
-    for (int i = 0; i < 5; i++) {
-        char line[100];
-        if (fgets(line, sizeof(line), file) != NULL) {
-            printf("%s", line);
-        }
-    }
-    fclose(file); // Cierra el archivo después de imprimir las primeras líneas
-
-    // Reabrir el archivo para el recuento
-    file = fopen(archivo, "r");
-    if (file == NULL) {
-        perror("Error al reabrir el archivo");
-        printf("No se pudo reabrir el archivo %s\n", archivo);
+        perror("Error al abrir el archivo"); // Imprime un mensaje de error si no se puede abrir el archivo
         return false;
     }
 
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
-    char ch;
-    char prev_ch = 0;  // Variable para almacenar el carácter anterior
-    
-    while ((ch = fgetc(file)) != EOF) { 
-        if (ch == '\n') {
-            num_filas_arch++;
-        } else if (ch == ' ' && num_filas_arch == 0) {
-            num_columnas_arch++;
+    int elementos_primera_linea = 0;
+    char linea[51200]; // Almacena cada línea leída del archivo
+
+    // Lee la primera línea del archivo para determinar el número de columnas
+    if (fgets(linea, sizeof(linea), file) != NULL) {
+        char *token = strtok(linea, " "); // Separa la línea en tokens basados en espacios
+        while (token != NULL) {
+            elementos_primera_linea++; // Contador de elementos en la primera línea
+            token = strtok(NULL, " "); // Avanza al siguiente token
         }
-        prev_ch = ch;  // Almacenar el carácter actual para la siguiente iteración
+        elementos_primera_linea -= 1; // Resta 1 para excluir el último token (posible salto de línea)
+        num_columnas_arch = elementos_primera_linea; // El número de columnas es igual a los elementos en la primera línea
     }
 
-    // Si el archivo no termina con una nueva línea, sumar 1 a num_filas_arch
-    if (prev_ch != '\n') {
-        num_filas_arch++;
+    // Lee el resto de las líneas para determinar el número de filas
+    while (fgets(linea, sizeof(linea), file)) {
+        num_filas_arch++; // Incrementa el contador de filas por cada línea leída
+        char *token = strtok(linea, " \t"); // Divide la línea en tokens basados en espacios o tabulaciones
+        while (token) {
+            token = strtok(NULL, " \t"); // Avanza al siguiente token
+        }
     }
+    num_filas_arch++; // Incrementa el contador de filas para la última línea
 
-    num_columnas_arch = num_columnas_arch / 2 + 1;
+    fclose(file); // Cierra el archivo después de leerlo
 
-    fclose(file);
-
-    printf("Número de filas detectadas en el archivo: %d\n", num_filas_arch);
-    printf("Número de columnas detectadas en el archivo: %d\n", num_columnas_arch);
-
+    // Compara el número de filas y columnas del archivo con los proporcionados por el usuario
     if (filas == num_filas_arch && cols == num_columnas_arch) {
-        return true;
+        return true; // Retorna verdadero si coinciden
     } else {
-        return false;
+        return false; // Retorna falso si no coinciden
     }
 }
 
