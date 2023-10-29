@@ -223,9 +223,23 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
 
     if (file == NULL) {
-        perror("Error al abrir el archivo");
-        return false;
+    perror("Error al abrir el archivo");
+    printf("No se pudo abrir el archivo %s\n", archivo); // Agregar esta línea
+    return false;
+    } else {
+        printf("Archivo %s abierto con éxito\n", archivo); // Agregar esta línea
     }
+
+    printf("Las primeras líneas del archivo son:\n");
+for (int i = 0; i < 5; i++) {  // imprime las primeras 5 líneas
+    char line[100];
+    if (fgets(line, sizeof(line), file) != NULL) {
+        printf("%s", line);
+    }
+}
+fseek(file, 0, SEEK_SET); // regresa al inicio del archivo
+
+
 
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
