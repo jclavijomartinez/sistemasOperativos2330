@@ -308,8 +308,6 @@ void **crearmatriz(int nfil, int ncol, int*** mat) {
             exit(1);
         }
     }
-
-    printf("Se ha reservado la memoria para la matriz con éxito!\n");
     return NULL;
 }
 
@@ -362,7 +360,5 @@ void cargarmatriz(FILE *arch, char *archivo, int filas, int cols, int ***matriz)
         }
     }
     free(linea); // Liberar la memoria utilizada por la línea
-    printf("Los contenidos del archivo se cargaron exitosamente en memoria\n");
     fclose(arch); // Cerrar el archivo después de cargar los datos en la matriz
-    printf("El archivo se abrió y cerró exitosamente\n");
 }
