@@ -230,16 +230,22 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
     char ch;
+    char prev_ch = 0;  // Variable para almacenar el carácter anterior
 
-    while ((ch = fgetc(file)) != EOF) { // Leer hasta el final del archivo
-        if (ch == '\n') { // Si encontramos una nueva línea, incrementamos el contador de filas
+    while ((ch = fgetc(file)) != EOF) { 
+        if (ch == '\n') {
             num_filas_arch++;
-        } else if (ch == ' ' && num_filas_arch == 0) { // Solo contamos los espacios en la primera fila para determinar el número de columnas
+        } else if (ch == ' ' && num_filas_arch == 0) {
             num_columnas_arch++;
         }
+        prev_ch = ch;  // Almacenar el carácter actual para la siguiente iteración
     }
 
-    // Como contamos espacios, el número de columnas es la mitad de num_columnas_arch
+    // Si el archivo no termina con una nueva línea, sumar 1 a num_filas_arch
+    if (prev_ch != '\n') {
+        num_filas_arch++;
+    }
+
     num_columnas_arch = num_columnas_arch / 2 + 1;
 
     fclose(file);
@@ -250,7 +256,6 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
         return false;
     }
 }
-
 
 
 /****************************************************************
