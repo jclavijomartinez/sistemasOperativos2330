@@ -223,33 +223,36 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
 
     if (file == NULL) {
-    perror("Error al abrir el archivo");
-    printf("No se pudo abrir el archivo %s\n", archivo); // Agregar esta línea
-    return false;
+        perror("Error al abrir el archivo");
+        printf("No se pudo abrir el archivo %s\n", archivo);
+        return false;
     } else {
-        printf("Archivo %s abierto con éxito\n", archivo); // Agregar esta línea
+        printf("Archivo %s abierto con éxito\n", archivo);
     }
 
+    // Imprimir las primeras líneas del archivo
     printf("Las primeras líneas del archivo son:\n");
-for (int i = 0; i < 5; i++) {  // imprime las primeras 5 líneas
-    char line[100];
-    if (fgets(line, sizeof(line), file) != NULL) {
-        printf("%s", line);
+    for (int i = 0; i < 5; i++) {
+        char line[100];
+        if (fgets(line, sizeof(line), file) != NULL) {
+            printf("%s", line);
+        }
     }
-}
-fseek(file, 0, SEEK_SET); // regresa al inicio del archivo
+    fclose(file); // Cierra el archivo después de imprimir las primeras líneas
 
-
+    // Reabrir el archivo para el recuento
+    file = fopen(archivo, "r");
+    if (file == NULL) {
+        perror("Error al reabrir el archivo");
+        printf("No se pudo reabrir el archivo %s\n", archivo);
+        return false;
+    }
 
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
     char ch;
     char prev_ch = 0;  // Variable para almacenar el carácter anterior
     
-    printf("Número de filas detectadas en el archivo: %d\n", num_filas_arch);
-    printf("Número de columnas detectadas en el archivo: %d\n", num_columnas_arch);
-
-
     while ((ch = fgetc(file)) != EOF) { 
         if (ch == '\n') {
             num_filas_arch++;
@@ -267,6 +270,9 @@ fseek(file, 0, SEEK_SET); // regresa al inicio del archivo
     num_columnas_arch = num_columnas_arch / 2 + 1;
 
     fclose(file);
+
+    printf("Número de filas detectadas en el archivo: %d\n", num_filas_arch);
+    printf("Número de columnas detectadas en el archivo: %d\n", num_columnas_arch);
 
     if (filas == num_filas_arch && cols == num_columnas_arch) {
         return true;
