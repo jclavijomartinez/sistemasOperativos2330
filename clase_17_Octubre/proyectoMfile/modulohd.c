@@ -231,6 +231,10 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     int num_columnas_arch = 0;
     char ch;
     char prev_ch = 0;  // Variable para almacenar el carácter anterior
+    
+    printf("Número de filas detectadas en el archivo: %d\n", num_filas_arch);
+    printf("Número de columnas detectadas en el archivo: %d\n", num_columnas_arch);
+
 
     while ((ch = fgetc(file)) != EOF) { 
         if (ch == '\n') {
