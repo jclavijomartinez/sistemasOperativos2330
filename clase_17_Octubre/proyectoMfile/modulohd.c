@@ -221,6 +221,7 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
  ****************************************************************/
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
     FILE *file = fopen(archivo, "r");
+
     if (file == NULL) {
         perror("Error al abrir el archivo");
         return false;
@@ -228,37 +229,28 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
 
     int num_filas_arch = 0;
     int num_columnas_arch = 0;
-    int valor;
+    char ch;
 
-    for (int i = 0; i < filas; i++) {
-        int columnas_en_linea_actual = 0;
-        while (fscanf(file, "%d", &valor) == 1) {
-            columnas_en_linea_actual++;
-            if (columnas_en_linea_actual > cols) {
-                printf("Se encontraron más columnas de las esperadas en la fila %d.\n", i+1);
-                fclose(file);
-                return false;
-            }
+    while ((ch = fgetc(file)) != EOF) { // Leer hasta el final del archivo
+        if (ch == '\n') { // Si encontramos una nueva línea, incrementamos el contador de filas
+            num_filas_arch++;
+        } else if (ch == ' ' && num_filas_arch == 0) { // Solo contamos los espacios en la primera fila para determinar el número de columnas
+            num_columnas_arch++;
         }
-        if (i == 0) {
-            num_columnas_arch = columnas_en_linea_actual;
-        } else if (columnas_en_linea_actual != num_columnas_arch) {
-            printf("Inconsistencia en el número de columnas en la fila %d.\n", i+1);
-            fclose(file);
-            return false;
-        }
-        num_filas_arch++;
     }
+
+    // Como contamos espacios, el número de columnas es la mitad de num_columnas_arch
+    num_columnas_arch = num_columnas_arch / 2 + 1;
 
     fclose(file);
 
     if (filas == num_filas_arch && cols == num_columnas_arch) {
         return true;
     } else {
-        printf("Se esperaban %d filas y %d columnas. Se encontraron %d filas y %d columnas en el archivo.\n", filas, cols, num_filas_arch, num_columnas_arch);
         return false;
     }
 }
+
 
 
 /****************************************************************
