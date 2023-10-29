@@ -220,11 +220,8 @@ bool divisionvertical(int numpor, int nfilas, int ncols, int numthreads, int ***
  * Valor de Salida: true si las dimensiones coinciden, false en caso contrario o si hay un error en la lectura del archivo.
  ****************************************************************/
 bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
-    // Se intenta abrir el archivo en modo lectura
     FILE *file = fopen(archivo, "r");
-
     if (file == NULL) {
-        // Si hay un error al abrir el archivo, muestra un mensaje de error y devuelve false
         perror("Error al abrir el archivo");
         return false;
     }
@@ -238,34 +235,28 @@ bool filasycolsdelarchivo(char *archivo, int filas, int cols) {
         while (fscanf(file, "%d", &valor) == 1) {
             columnas_en_linea_actual++;
             if (columnas_en_linea_actual > cols) {
-                // Si encontramos más columnas de las esperadas, cerramos el archivo y regresamos false
+                printf("Se encontraron más columnas de las esperadas en la fila %d.\n", i+1);
                 fclose(file);
                 return false;
             }
         }
-
-        printf("En la fila %d, encontró %d columnas\n", i+1, columnas_en_linea_actual);  // IMPRESIÓN AGREGADA
-
         if (i == 0) {
-            num_columnas_arch = columnas_en_linea_actual; // Establecemos el número de columnas basado en la primera línea
+            num_columnas_arch = columnas_en_linea_actual;
         } else if (columnas_en_linea_actual != num_columnas_arch) {
-            // Si cualquier línea subsiguiente tiene un número diferente de columnas, cerramos el archivo y regresamos false
+            printf("Inconsistencia en el número de columnas en la fila %d.\n", i+1);
             fclose(file);
             return false;
         }
         num_filas_arch++;
     }
 
-    printf("Total de filas encontradas: %d\n", num_filas_arch);    // IMPRESIÓN AGREGADA
-    printf("Total de columnas encontradas: %d\n", num_columnas_arch);  // IMPRESIÓN AGREGADA
+    fclose(file);
 
-    fclose(file); // Cierra el archivo después de leerlo
-
-    // Compara el número de filas y columnas del archivo con los proporcionados por el usuario
     if (filas == num_filas_arch && cols == num_columnas_arch) {
-        return true; // Retorna verdadero si coinciden
+        return true;
     } else {
-        return false; // Retorna falso si no coinciden
+        printf("Se esperaban %d filas y %d columnas. Se encontraron %d filas y %d columnas en el archivo.\n", filas, cols, num_filas_arch, num_columnas_arch);
+        return false;
     }
 }
 
